@@ -19,17 +19,21 @@ struct InstructionFileView: View {
             // attempts to read file content into a string
             markdownContent = try MarkdownContent(String(contentsOf: markdownURL))
         } catch {
-            // this should only happen if something catastrophic happened with the file
+            // this should only happen if something catastrophic happened with downloading the file
             markdownContent = MarkdownContent("Failed to open file.")
         }
     }
     
     var body: some View {
         ScrollView {
-            // TODO: Round image corners
             // TODO: See if there's a way to display a throbber of some sort whilst loading an image
             Markdown(markdownContent)
                 .markdownImageProvider(.default)
+                .markdownBlockStyle(\.image) { config in
+                    config.label
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
+                        .shadow(radius: 2, y:2)
+                }
                 .padding()
         }
     }
