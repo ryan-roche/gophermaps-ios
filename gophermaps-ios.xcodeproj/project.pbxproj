@@ -17,12 +17,25 @@
 		94812A922B8FA5E30076C3F9 /* test-instructions-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 94812A8F2B8FA5E30076C3F9 /* test-instructions-2.png */; };
 		94812A932B8FA5E30076C3F9 /* test-instructions.md in Resources */ = {isa = PBXBuildFile; fileRef = 94812A902B8FA5E30076C3F9 /* test-instructions.md */; };
 		94812A962B8FA75B0076C3F9 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 94812A952B8FA75B0076C3F9 /* MarkdownUI */; };
+		949A22E22B90ECCE002B003C /* GraphNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949A22E12B90ECCE002B003C /* GraphNode.swift */; };
+		949A22E82B90F7D6002B003C /* RouteUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949A22E72B90F7D6002B003C /* RouteUtils.swift */; };
+		949A22F02B90FBC9002B003C /* gophermaps_iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949A22EF2B90FBC9002B003C /* gophermaps_iosTests.swift */; };
 		949F52752B8D398600158803 /* BuildingCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949F52742B8D398600158803 /* BuildingCard.swift */; };
 		94F7A27F2B8FDF0100FD6628 /* InstructionFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F7A27E2B8FDF0100FD6628 /* InstructionFileView.swift */; };
 		94F7A2812B9004AD00FD6628 /* RoutePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F7A2802B9004AD00FD6628 /* RoutePreviewView.swift */; };
 		94F7A2852B90052100FD6628 /* StartListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F7A2842B90052100FD6628 /* StartListView.swift */; };
 		94F7A2872B90052800FD6628 /* DestinationListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F7A2862B90052800FD6628 /* DestinationListView.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		949A22F12B90FBC9002B003C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9474FF4C2B8AC45D00C48C7A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9474FF532B8AC45D00C48C7A;
+			remoteInfo = "gophermaps-ios";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		9474FF542B8AC45D00C48C7A /* gophermaps-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "gophermaps-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -35,6 +48,10 @@
 		94812A8E2B8FA5E30076C3F9 /* test-instructions-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "test-instructions-1.png"; sourceTree = "<group>"; };
 		94812A8F2B8FA5E30076C3F9 /* test-instructions-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "test-instructions-2.png"; sourceTree = "<group>"; };
 		94812A902B8FA5E30076C3F9 /* test-instructions.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "test-instructions.md"; sourceTree = "<group>"; };
+		949A22E12B90ECCE002B003C /* GraphNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphNode.swift; sourceTree = "<group>"; };
+		949A22E72B90F7D6002B003C /* RouteUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteUtils.swift; sourceTree = "<group>"; };
+		949A22ED2B90FBC9002B003C /* gophermaps-iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "gophermaps-iosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		949A22EF2B90FBC9002B003C /* gophermaps_iosTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gophermaps_iosTests.swift; sourceTree = "<group>"; };
 		949F52742B8D398600158803 /* BuildingCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildingCard.swift; sourceTree = "<group>"; };
 		94F7A27E2B8FDF0100FD6628 /* InstructionFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionFileView.swift; sourceTree = "<group>"; };
 		94F7A2802B9004AD00FD6628 /* RoutePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutePreviewView.swift; sourceTree = "<group>"; };
@@ -51,12 +68,20 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		949A22EA2B90FBC9002B003C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		9411AD562B906268006E7FB4 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				949A22E72B90F7D6002B003C /* RouteUtils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -85,6 +110,7 @@
 			isa = PBXGroup;
 			children = (
 				9474FF562B8AC45D00C48C7A /* gophermaps-ios */,
+				949A22EE2B90FBC9002B003C /* gophermaps-iosTests */,
 				9474FF552B8AC45D00C48C7A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -93,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				9474FF542B8AC45D00C48C7A /* gophermaps-ios.app */,
+				949A22ED2B90FBC9002B003C /* gophermaps-iosTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -126,8 +153,17 @@
 			isa = PBXGroup;
 			children = (
 				94812A802B8E58920076C3F9 /* BuildingEntry.swift */,
+				949A22E12B90ECCE002B003C /* GraphNode.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		949A22EE2B90FBC9002B003C /* gophermaps-iosTests */ = {
+			isa = PBXGroup;
+			children = (
+				949A22EF2B90FBC9002B003C /* gophermaps_iosTests.swift */,
+			);
+			path = "gophermaps-iosTests";
 			sourceTree = "<group>";
 		};
 		949F52762B8D399800158803 /* Views */ = {
@@ -162,6 +198,24 @@
 			productReference = 9474FF542B8AC45D00C48C7A /* gophermaps-ios.app */;
 			productType = "com.apple.product-type.application";
 		};
+		949A22EC2B90FBC9002B003C /* gophermaps-iosTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 949A22F32B90FBC9002B003C /* Build configuration list for PBXNativeTarget "gophermaps-iosTests" */;
+			buildPhases = (
+				949A22E92B90FBC9002B003C /* Sources */,
+				949A22EA2B90FBC9002B003C /* Frameworks */,
+				949A22EB2B90FBC9002B003C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				949A22F22B90FBC9002B003C /* PBXTargetDependency */,
+			);
+			name = "gophermaps-iosTests";
+			productName = "gophermaps-iosTests";
+			productReference = 949A22ED2B90FBC9002B003C /* gophermaps-iosTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -174,6 +228,10 @@
 				TargetAttributes = {
 					9474FF532B8AC45D00C48C7A = {
 						CreatedOnToolsVersion = 15.2;
+					};
+					949A22EC2B90FBC9002B003C = {
+						CreatedOnToolsVersion = 15.2;
+						TestTargetID = 9474FF532B8AC45D00C48C7A;
 					};
 				};
 			};
@@ -194,6 +252,7 @@
 			projectRoot = "";
 			targets = (
 				9474FF532B8AC45D00C48C7A /* gophermaps-ios */,
+				949A22EC2B90FBC9002B003C /* gophermaps-iosTests */,
 			);
 		};
 /* End PBXProject section */
@@ -211,6 +270,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		949A22EB2B90FBC9002B003C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -218,11 +284,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				949A22E22B90ECCE002B003C /* GraphNode.swift in Sources */,
 				9474FF5A2B8AC45D00C48C7A /* ContentView.swift in Sources */,
 				94F7A27F2B8FDF0100FD6628 /* InstructionFileView.swift in Sources */,
 				9474FF582B8AC45D00C48C7A /* gophermaps_iosApp.swift in Sources */,
 				94F7A2852B90052100FD6628 /* StartListView.swift in Sources */,
 				94812A812B8E58920076C3F9 /* BuildingEntry.swift in Sources */,
+				949A22E82B90F7D6002B003C /* RouteUtils.swift in Sources */,
 				94F7A2812B9004AD00FD6628 /* RoutePreviewView.swift in Sources */,
 				949F52752B8D398600158803 /* BuildingCard.swift in Sources */,
 				94812A832B8E5A220076C3F9 /* PreviewBuildingList.swift in Sources */,
@@ -230,7 +298,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		949A22E92B90FBC9002B003C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				949A22F02B90FBC9002B003C /* gophermaps_iosTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		949A22F22B90FBC9002B003C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9474FF532B8AC45D00C48C7A /* gophermaps-ios */;
+			targetProxy = 949A22F12B90FBC9002B003C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		9474FF602B8AC45F00C48C7A /* Debug */ = {
@@ -426,6 +510,42 @@
 			};
 			name = Release;
 		};
+		949A22F42B90FBC9002B003C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GMBKLQ776M;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "ryan-roche.gophermaps-iosTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/gophermaps-ios.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/gophermaps-ios";
+			};
+			name = Debug;
+		};
+		949A22F52B90FBC9002B003C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GMBKLQ776M;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "ryan-roche.gophermaps-iosTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/gophermaps-ios.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/gophermaps-ios";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -443,6 +563,15 @@
 			buildConfigurations = (
 				9474FF632B8AC45F00C48C7A /* Debug */,
 				9474FF642B8AC45F00C48C7A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		949A22F32B90FBC9002B003C /* Build configuration list for PBXNativeTarget "gophermaps-iosTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				949A22F42B90FBC9002B003C /* Debug */,
+				949A22F52B90FBC9002B003C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
