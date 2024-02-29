@@ -13,6 +13,7 @@ struct BuildingCard: View {
     
     var body: some View {
         HStack {
+            // MARK: Name label
             Text(building.name)
                 .font(.title3)
                 .fontWeight(.bold)
@@ -22,6 +23,7 @@ struct BuildingCard: View {
             
             Spacer()
             
+            // MARK: Thumbnail image
             Image(building.thumbnail)
                 .resizable()
                 .scaledToFill()

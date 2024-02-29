@@ -14,12 +14,12 @@ struct StartListView: View {
     var body: some View {
         NavigationStack {
             ScrollView {
-                // List each card in alphabetical order
                 VStack(spacing:cardSpacing) {
                     Text("Available starting points:")
                         .padding(.leading)
                         .frame(maxWidth:.infinity, alignment:.leading)
                     
+                    // List out the cards in alphabetical order
                     ForEach(startingPoints.sorted(by: {$0.name < $1.name}), id:\.name) { entry in
                         NavigationLink {
                             DestinationListView(destinationsFor: entry)
@@ -29,7 +29,13 @@ struct StartListView: View {
                     }
                 }
             }.navigationTitle("Where are you?")
-        }.overlay {
+        }
+    }
+}
+
+#Preview {
+    StartListView(startingPoints: previewBuildings())
+        .overlay {
             Label(
                 title: { Text("Gophermaps development build") },
                 icon: { Image(systemName: "hammer.circle") }
@@ -39,9 +45,4 @@ struct StartListView: View {
             .background(.thinMaterial, in: Capsule())
             .frame(maxWidth:.infinity, maxHeight:.infinity, alignment:.bottom)
         }
-    }
-}
-
-#Preview {
-    StartListView(startingPoints: previewBuildings())
 }

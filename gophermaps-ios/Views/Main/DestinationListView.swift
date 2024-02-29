@@ -25,6 +25,7 @@ struct DestinationListView: View {
                         .padding(.leading)
                         .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/, alignment:.leading)
                     
+                    // List destinations sorted by name
                     ForEach(destinationsFor.destinations.sorted(by: {$0.name < $1.name}), id:\.name) { destination in
                         NavigationLink {
                             RoutePreviewView().navigationTitle("Route Preview")

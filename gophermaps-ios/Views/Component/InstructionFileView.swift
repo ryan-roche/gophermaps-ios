@@ -16,14 +16,18 @@ struct InstructionFileView: View {
         self.markdownURL = markdownURL
         
         do {
+            // attempts to read file content into a string
             markdownContent = try MarkdownContent(String(contentsOf: markdownURL))
         } catch {
+            // this should only happen if something catastrophic happened with the file
             markdownContent = MarkdownContent("Failed to open file.")
         }
     }
     
     var body: some View {
         ScrollView {
+            // TODO: Round image corners
+            // TODO: See if there's a way to display a throbber of some sort whilst loading an image
             Markdown(markdownContent)
                 .markdownImageProvider(.default)
                 .padding()
@@ -34,5 +38,6 @@ struct InstructionFileView: View {
 #Preview {
     // Loads the markdown file from the bundle (Preview Content) and
     // loads the images from the network (GitHub)
+    // TODO: Figure out loading files from storage
     InstructionFileView(markdownURL: Bundle.main.url(forResource: "test-instructions", withExtension: "md")!)
 }
