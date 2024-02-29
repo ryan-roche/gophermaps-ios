@@ -16,6 +16,7 @@ struct BuildingCard: View {
             Text(building.name)
                 .font(.title3)
                 .fontWeight(.bold)
+                .foregroundStyle(.primary)
                 .padding(.leading, 12)
                 .padding(.vertical, 20)
             
