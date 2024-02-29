@@ -13,12 +13,12 @@
 		9474FF5F2B8AC45F00C48C7A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9474FF5E2B8AC45F00C48C7A /* Preview Assets.xcassets */; };
 		94812A812B8E58920076C3F9 /* BuildingEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94812A802B8E58920076C3F9 /* BuildingEntry.swift */; };
 		94812A832B8E5A220076C3F9 /* PreviewBuildingList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94812A822B8E5A220076C3F9 /* PreviewBuildingList.swift */; };
-		94812A8B2B8F997C0076C3F9 /* InstructionsDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94812A8A2B8F997C0076C3F9 /* InstructionsDisplay.swift */; };
-		94812A8D2B8F99920076C3F9 /* MarkdownDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94812A8C2B8F99920076C3F9 /* MarkdownDisplay.swift */; };
 		94812A912B8FA5E30076C3F9 /* test-instructions-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 94812A8E2B8FA5E30076C3F9 /* test-instructions-1.png */; };
 		94812A922B8FA5E30076C3F9 /* test-instructions-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 94812A8F2B8FA5E30076C3F9 /* test-instructions-2.png */; };
 		94812A932B8FA5E30076C3F9 /* test-instructions.md in Resources */ = {isa = PBXBuildFile; fileRef = 94812A902B8FA5E30076C3F9 /* test-instructions.md */; };
+		94812A962B8FA75B0076C3F9 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 94812A952B8FA75B0076C3F9 /* MarkdownUI */; };
 		949F52752B8D398600158803 /* BuildingCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949F52742B8D398600158803 /* BuildingCard.swift */; };
+		94F7A27F2B8FDF0100FD6628 /* InstructionFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F7A27E2B8FDF0100FD6628 /* InstructionFileView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,12 +29,11 @@
 		9474FF5E2B8AC45F00C48C7A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		94812A802B8E58920076C3F9 /* BuildingEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildingEntry.swift; sourceTree = "<group>"; };
 		94812A822B8E5A220076C3F9 /* PreviewBuildingList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewBuildingList.swift; sourceTree = "<group>"; };
-		94812A8A2B8F997C0076C3F9 /* InstructionsDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionsDisplay.swift; sourceTree = "<group>"; };
-		94812A8C2B8F99920076C3F9 /* MarkdownDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownDisplay.swift; sourceTree = "<group>"; };
 		94812A8E2B8FA5E30076C3F9 /* test-instructions-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "test-instructions-1.png"; sourceTree = "<group>"; };
 		94812A8F2B8FA5E30076C3F9 /* test-instructions-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "test-instructions-2.png"; sourceTree = "<group>"; };
 		94812A902B8FA5E30076C3F9 /* test-instructions.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = "test-instructions.md"; sourceTree = "<group>"; };
 		949F52742B8D398600158803 /* BuildingCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildingCard.swift; sourceTree = "<group>"; };
+		94F7A27E2B8FDF0100FD6628 /* InstructionFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionFileView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -42,6 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				94812A962B8FA75B0076C3F9 /* MarkdownUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,7 +52,6 @@
 			isa = PBXGroup;
 			children = (
 				9474FF592B8AC45D00C48C7A /* ContentView.swift */,
-				94812A8A2B8F997C0076C3F9 /* InstructionsDisplay.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -60,8 +59,8 @@
 		944667F82B8D39BC00D84358 /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				94F7A27E2B8FDF0100FD6628 /* InstructionFileView.swift */,
 				949F52742B8D398600158803 /* BuildingCard.swift */,
-				94812A8C2B8F99920076C3F9 /* MarkdownDisplay.swift */,
 			);
 			path = Component;
 			sourceTree = "<group>";
@@ -139,6 +138,9 @@
 			dependencies = (
 			);
 			name = "gophermaps-ios";
+			packageProductDependencies = (
+				94812A952B8FA75B0076C3F9 /* MarkdownUI */,
+			);
 			productName = "gophermaps-ios";
 			productReference = 9474FF542B8AC45D00C48C7A /* gophermaps-ios.app */;
 			productType = "com.apple.product-type.application";
@@ -167,6 +169,9 @@
 				Base,
 			);
 			mainGroup = 9474FF4B2B8AC45D00C48C7A;
+			packageReferences = (
+				94812A942B8FA75B0076C3F9 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
+			);
 			productRefGroup = 9474FF552B8AC45D00C48C7A /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -197,9 +202,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				9474FF5A2B8AC45D00C48C7A /* ContentView.swift in Sources */,
-				94812A8B2B8F997C0076C3F9 /* InstructionsDisplay.swift in Sources */,
+				94F7A27F2B8FDF0100FD6628 /* InstructionFileView.swift in Sources */,
 				9474FF582B8AC45D00C48C7A /* gophermaps_iosApp.swift in Sources */,
-				94812A8D2B8F99920076C3F9 /* MarkdownDisplay.swift in Sources */,
 				94812A812B8E58920076C3F9 /* BuildingEntry.swift in Sources */,
 				949F52752B8D398600158803 /* BuildingCard.swift in Sources */,
 				94812A832B8E5A220076C3F9 /* PreviewBuildingList.swift in Sources */,
@@ -424,6 +428,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		94812A942B8FA75B0076C3F9 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/gonzalezreal/swift-markdown-ui";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.3.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		94812A952B8FA75B0076C3F9 /* MarkdownUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 94812A942B8FA75B0076C3F9 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
+			productName = MarkdownUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9474FF4C2B8AC45D00C48C7A /* Project object */;
 }

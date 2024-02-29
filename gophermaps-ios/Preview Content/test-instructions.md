@@ -18,7 +18,9 @@ There should be a divider line above this text.
 *this text is italicized*
 
 Test image embed:
-![bulborb-test-image](img/instruction-test-1.png)
+
+![bulborb-test-image](https://github.com/ryan-roche/gophermaps-backend/blob/f7f64c4e9d8f37e68d2fdecc2841933c03e0acef/web/img/instruction-test-1.png?raw=true)
 
 Second test image:
-![teala-test-image](img/instruction-test-2.png)
+
+![teala-test-image](https://github.com/ryan-roche/gophermaps-backend/blob/f7f64c4e9d8f37e68d2fdecc2841933c03e0acef/web/img/instruction-test-2.png?raw=true)
