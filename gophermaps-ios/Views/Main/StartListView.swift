@@ -8,15 +8,40 @@
 import SwiftUI
 
 struct StartListView: View {
+    let startingPoints: [BuildingEntry]
+    @ScaledMetric(relativeTo:.title3) var cardSpacing = 8
+    
     var body: some View {
-        Text("Start List View")
-        
-        // Takes the list of available starting points
-        // List each one as a BuildingCard, in alphabetic order
-        // Clicking one takes you to a DestinationListView created using that BuildingEntry as a parameter
+        NavigationStack {
+            ScrollView {
+                // List each card in alphabetical order
+                VStack(spacing:cardSpacing) {
+                    Text("Available starting points:")
+                        .padding(.leading)
+                        .frame(maxWidth:.infinity, alignment:.leading)
+                    
+                    ForEach(startingPoints.sorted(by: {$0.name < $1.name}), id:\.name) { entry in
+                        NavigationLink {
+                            DestinationListView(destinationsFor: entry)
+                        } label: {
+                            BuildingCard(building: entry)
+                        }.buttonStyle(.plain)
+                    }
+                }
+            }.navigationTitle("Where are you?")
+        }.overlay {
+            Label(
+                title: { Text("Gophermaps development build") },
+                icon: { Image(systemName: "hammer.circle") }
+            )
+            .padding()
+            .foregroundStyle(.primary)
+            .background(.thinMaterial, in: Capsule())
+            .frame(maxWidth:.infinity, maxHeight:.infinity, alignment:.bottom)
+        }
     }
 }
 
 #Preview {
-    StartListView()
+    StartListView(startingPoints: previewBuildings())
 }
