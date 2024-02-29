@@ -54,6 +54,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9411AD562B906268006E7FB4 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
 		944667F72B8D39B900D84358 /* Main */ = {
 			isa = PBXGroup;
 			children = (
@@ -94,6 +101,8 @@
 			isa = PBXGroup;
 			children = (
 				949F52762B8D399800158803 /* Views */,
+				9411AD562B906268006E7FB4 /* Utils */,
+				94812A7F2B8E57F70076C3F9 /* Models */,
 				9474FF572B8AC45D00C48C7A /* gophermaps_iosApp.swift */,
 				9474FF5B2B8AC45F00C48C7A /* Assets.xcassets */,
 				9474FF5D2B8AC45F00C48C7A /* Preview Content */,
@@ -124,7 +133,6 @@
 		949F52762B8D399800158803 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				94812A7F2B8E57F70076C3F9 /* Models */,
 				944667F72B8D39B900D84358 /* Main */,
 				944667F82B8D39BC00D84358 /* Component */,
 			);
