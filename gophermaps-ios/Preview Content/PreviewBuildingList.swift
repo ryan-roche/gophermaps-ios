@@ -17,3 +17,9 @@ func previewBuildings() -> [BuildingEntry] {
     let previewBuildingsList = [previewTateHall, previewKellerHall]
     return previewBuildingsList
 }
+
+func destinationPreviewBuilding() -> BuildingEntry {
+    var previewBuilding = previewTateHall
+    previewBuilding.destinations.insert(previewKellerHall)
+    return previewBuilding
+}
