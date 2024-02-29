@@ -14,6 +14,6 @@ func previewBuildings() -> [BuildingEntry] {
     previewKellerHall.destinations.insert(previewTateHall)
     previewTateHall.destinations.insert(previewKellerHall)
 
-    let previewBuildingsList = [previewKellerHall, previewTateHall]
+    let previewBuildingsList = [previewTateHall, previewKellerHall]
     return previewBuildingsList
 }
