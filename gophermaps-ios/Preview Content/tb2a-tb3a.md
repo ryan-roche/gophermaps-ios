@@ -1,4 +1,4 @@
-# This is a dummy file
+# This is the second dummy file
 
 ## h2
 

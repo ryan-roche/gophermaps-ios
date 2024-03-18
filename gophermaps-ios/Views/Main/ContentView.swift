@@ -8,14 +8,24 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var showSettings = false
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            StartingPointSelect(startingPoints: previewBuildings())
+                .toolbar {
+                    Button {
+                        showSettings.toggle()
+                    } label: {
+                        Image(systemName:"gear")
+                    }
+                }
+                .sheet(isPresented: $showSettings, content: {
+                    NavigationStack {
+                        SettingsPage().navigationTitle("Settings")
+                    }
+                })
         }
-        .padding()
     }
 }
 

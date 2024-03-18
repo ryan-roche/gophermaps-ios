@@ -9,39 +9,42 @@ import SwiftUI
 import MarkdownUI
 
 struct InstructionFileView: View {
-    let markdownURL: URL
-    let markdownContent : MarkdownContent
+    private let markdownContent : MarkdownContent
+    @Binding var filename: String
     
-    init(markdownURL: URL) {
-        self.markdownURL = markdownURL
-        
+    init(filename: Binding<String>) {
+        self._filename = filename
         do {
-            // attempts to read file content into a string
-            markdownContent = try MarkdownContent(String(contentsOf: markdownURL))
+            if let markdownURL = Bundle.main.url(forResource: filename.wrappedValue, withExtension: "md") {
+                // attempts to read file content into a string
+                markdownContent = try MarkdownContent(String(contentsOf: markdownURL))
+            } else {
+                markdownContent = MarkdownContent("Failed to download file.")
+            }
         } catch {
             // this should only happen if something catastrophic happened with downloading the file
-            markdownContent = MarkdownContent("Failed to open file.")
+            markdownContent = MarkdownContent("Failed to load file.")
         }
     }
     
     var body: some View {
-        ScrollView {
-            // TODO: See if there's a way to display a throbber of some sort whilst loading an image
-            Markdown(markdownContent)
-                .markdownImageProvider(.default)
-                .markdownBlockStyle(\.image) { config in
-                    config.label
-                        .clipShape(RoundedRectangle(cornerRadius: 12))
-                        .shadow(radius: 2, y:2)
-                }
-                .padding()
-        }
+        Markdown(markdownContent)
+            .markdownImageProvider(.asset)
+            .markdownBlockStyle(\.image) { config in
+                config.label
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .shadow(radius: 2, y:2)
+            }
+            .padding()
     }
 }
 
 #Preview {
-    // Loads the markdown file from the bundle (Preview Content) and
-    // loads the images from the network (GitHub)
-    // TODO: Figure out loading files from storage
-    InstructionFileView(markdownURL: Bundle.main.url(forResource: "test-instructions", withExtension: "md")!)
+    struct PreviewWrapper: View {
+        @State var filename = "test-instructions"
+        var body: some View {
+            InstructionFileView(filename: $filename)
+        }
+    }
+    return PreviewWrapper()
 }

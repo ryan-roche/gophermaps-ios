@@ -11,5 +11,6 @@ struct BuildingEntry: Hashable {
     let name: String
     let thumbnail: ImageResource
     
+    // TODO: remove this
     var destinations = Set<BuildingEntry>()
 }

@@ -7,6 +7,11 @@
 
 import UIKit
 
+func getRouteForNodes(start:BuildingEntry, end:BuildingEntry) -> [GraphNode] {
+    // TODO: actually implement this
+    return previewNavRoute()
+}
+
 func getBuildingsFromRoute(route: [GraphNode]) -> [BuildingEntry] {
     var buildingList: [BuildingEntry] = []
     var uniqueBuildings = Set<String>()

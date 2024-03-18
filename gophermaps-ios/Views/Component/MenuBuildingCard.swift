@@ -7,16 +7,29 @@
 
 import SwiftUI
 
-struct BuildingCard: View {
+struct MenuBuildingCard: View {
     let building: BuildingEntry
+    let smallText: Bool
+    
     @ScaledMetric(relativeTo: .title3) var picFrameHeight = 70
+    
+    init(building: BuildingEntry, smallText: Bool) {
+        self.building = building
+        self.smallText = smallText
+    }
+    
+    init(building: BuildingEntry) {
+        self.building = building
+        self.smallText = false
+    }
     
     var body: some View {
         HStack {
             // MARK: Name label
+            // TODO: Implement "smart" truncating
             Text(building.name)
-                .font(.title3)
-                .fontWeight(.bold)
+                .font(.headline)
+                .fontWeight(.semibold)
                 .foregroundStyle(.primary)
                 .padding(.leading, 12)
                 .padding(.vertical, 20)
@@ -28,15 +41,15 @@ struct BuildingCard: View {
                 .resizable()
                 .scaledToFill()
                 .frame(width:150, height:picFrameHeight)
-                .clipped()
-        }.background(Color(.systemBackground))
+        }.background(.thickMaterial)
             .clipShape(RoundedRectangle(cornerRadius: 6))
-            .shadow(color:Color.black.opacity(0.2),radius: 8, y:6)
-            .padding(.horizontal)
             
     }
 }
 
 #Preview {
-    BuildingCard(building: previewKellerHall)
+    VStack{
+        MenuBuildingCard(building: previewKellerHall)
+        PreviewBuildingCard(building: previewKellerHall)
+    }.padding(.horizontal)
 }
