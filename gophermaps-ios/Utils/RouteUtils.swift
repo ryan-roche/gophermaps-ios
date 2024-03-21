@@ -7,21 +7,6 @@
 
 import UIKit
 
-func getRouteForNodes(start:BuildingEntry, end:BuildingEntry) -> [GraphNode] {
-    // TODO: actually implement this
-    return previewNavRoute()
-}
-
-func getBuildingsFromRoute(route: [GraphNode]) -> [BuildingEntry] {
-    var buildingList: [BuildingEntry] = []
-    var uniqueBuildings = Set<String>()
-    
-    for node in route {
-        if !uniqueBuildings.contains(node.building.name) {
-            buildingList.append(node.building)
-            uniqueBuildings.insert(node.building.name)
-        }
-    }
-    
-    return buildingList
+func getBuildingsFromRoute(route: [any PathStep]) -> [BuildingEntry] {
+    return route.compactMap { $0 as? BuildingEntry }
 }

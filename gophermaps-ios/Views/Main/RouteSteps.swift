@@ -15,6 +15,8 @@ struct RouteSteps: View {
     
     @State private var showingSheet = false
     @State private var downloadingRoute = false
+    @State private var stepsFetched = false
+    @State private var routeBuildings: [BuildingEntry] = []
     
     var body: some View {
     
@@ -33,27 +35,44 @@ struct RouteSteps: View {
         
         NavigationStack {
             ScrollView {
-                VStack(spacing:cardSpacing) {
-                    // Iterate over route steps + indices
-                    ForEach(Array(getBuildingsFromRoute(route: getRouteForNodes(start: start, end: end)).enumerated()), id:\.element) { index, element in
-                        HStack(spacing:12) {
-                            
-                            // MARK: Step number
-                            Circle()
-                                .frame(width:24)
-                                .overlay(Text(String(index + 1)).foregroundStyle(.background))
-                            
-                            // MARK: Building Card
-                            PreviewBuildingCard(building: element).shadow(color:Color.black.opacity(0.14), radius: 4)
-                            
-                        }.padding(.horizontal)
+                if stepsFetched {
+                    VStack(spacing:cardSpacing) {
+                        // Iterate over route steps + indices
+                        ForEach(Array(routeBuildings.enumerated()), id:\.element) { index, element in
+                            HStack(spacing:12) {
+                                
+                                // MARK: Step number
+                                Circle()
+                                    .frame(width:24)
+                                    .overlay(Text(String(index + 1)).foregroundStyle(.background))
+                                
+                                // MARK: Building Card
+                                PreviewBuildingCard(building: element).shadow(color:Color.black.opacity(0.14), radius: 4)
+                                
+                            }.padding(.horizontal)
+                        }
                     }
+                } else {
+                    ProgressView("Getting Steps").padding().frame(maxWidth:.infinity)
                 }
-            }.overlay(alignment: UserDefaults.standard.bool(forKey: "goButtonOnLeft") ? .bottomLeading : .bottomTrailing) {
+            }
+            .overlay(alignment: UserDefaults.standard.bool(forKey: "goButtonOnLeft") ? .bottomLeading : .bottomTrailing) {
                 RouteGoButton(onTap:{
-                    await Backend.downloadRouteData(route: getRouteForNodes(start: start, end: end))
-                    showingSheet.toggle()
-                }).padding(.bottom).padding([.leading, .trailing])
+                    do {
+                        let res = try await Backend.downloadRouteData(route: BackendStubs.getRoute(start: start, end: end))
+                        if res { showingSheet.toggle() }
+                    } catch {
+                        print("Failed to download route data")
+                    }
+                }).padding(.bottom).padding([.leading, .trailing]).disabled(!stepsFetched)
+            }
+            .task {
+                do {
+                    routeBuildings = try await getBuildingsFromRoute(route: BackendStubs.getRoute(start: start, end: end))
+                    stepsFetched = true
+                } catch {
+                    print("Failed to get buildings or route")
+                }
             }
         }.sheet(isPresented: $showingSheet, content: {
             InstructionNavigator(route: previewShortNavRoute)

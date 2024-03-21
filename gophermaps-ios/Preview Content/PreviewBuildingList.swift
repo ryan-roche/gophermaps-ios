@@ -7,19 +7,7 @@
 
 import UIKit
 
-var previewKellerHall = BuildingEntry(name: "Keller Hall", thumbnail: .PlaceholderBuildings.kellerHall)
-var previewTateHall = BuildingEntry(name: "Tate Hall", thumbnail: .PlaceholderBuildings.tateHall)
+var previewKellerHall = BuildingEntry(name: "Keller Hall", navID:"kh1a", thumbnail: "keller-hall")
+var previewTateHall = BuildingEntry(name: "Tate Hall", navID:"th1a", thumbnail: "tate-hall")
 
-func previewBuildings() -> [BuildingEntry] {
-    previewKellerHall.destinations.insert(previewTateHall)
-    previewTateHall.destinations.insert(previewKellerHall)
-
-    let previewBuildingsList = [previewTateHall, previewKellerHall]
-    return previewBuildingsList
-}
-
-func destinationPreviewBuilding() -> BuildingEntry {
-    var previewBuilding = previewTateHall
-    previewBuilding.destinations.insert(previewKellerHall)
-    return previewBuilding
-}
+let previewBuildings: [BuildingEntry] = [previewTateHall, previewKellerHall]

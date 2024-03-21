@@ -8,16 +8,16 @@
 import SwiftUI
 
 struct InstructionNavigator: View {
-    var route: [GraphNode]
+    var route: [PathStep]
     
     @Environment(\.dismiss) var dismiss
     
     @State var mdFileName: String
     @State var nodeIndex = 0
     
-    init(route: [GraphNode]) {
+    init(route: [PathStep]) {
         self.route = route
-        self.mdFileName = route[0].nodeID + "-" + route[1].nodeID
+        self.mdFileName = route[0].navID + "-" + route[1].navID
     }
     
     var body: some View {
@@ -27,12 +27,13 @@ struct InstructionNavigator: View {
             HStack {
                 Button("Back") {
                     nodeIndex -= 1
-                    mdFileName = route[nodeIndex].nodeID + "-" + route[nodeIndex+1].nodeID
+                    mdFileName = route[nodeIndex].navID + "-" + route[nodeIndex+1].navID
                     print(mdFileName)
                 }.buttonStyle(.borderedProminent).font(.largeTitle).disabled(nodeIndex == 0).shadow(radius:4)
+                
                 Button("Next") {
                     nodeIndex += 1
-                    mdFileName = route[nodeIndex].nodeID + "-" + route[nodeIndex+1].nodeID
+                    mdFileName = route[nodeIndex].navID + "-" + route[nodeIndex+1].navID
                     print(mdFileName)
                 }.buttonStyle(.borderedProminent).font(.largeTitle).disabled(nodeIndex == route.count - 2).shadow(radius:4)
             }

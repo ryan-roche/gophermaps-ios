@@ -12,7 +12,7 @@ struct ContentView: View {
     
     var body: some View {
         NavigationStack {
-            StartingPointSelect(startingPoints: previewBuildings())
+            StartingPointSelect(startingPoints: previewBuildings)
                 .toolbar {
                     Button {
                         showSettings.toggle()

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct GraphNode {
-    let nodeID: String
-    let building: BuildingEntry
+struct GraphNode: Codable, Hashable, PathStep {
+    let name: String    // The name of the building the GraphNode belongs to
+    let navID: String   // The unique string identifier of the specific node
 }

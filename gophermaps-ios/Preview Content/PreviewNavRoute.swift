@@ -7,24 +7,15 @@
 
 import UIKit
 
-var testBuilding1 = BuildingEntry(name: "Test Building 1", thumbnail: .PlaceholderBuildings.kellerHall)
-var testBuilding2 = BuildingEntry(name: "Test Building 2", thumbnail: .PlaceholderBuildings.kellerHall)
-var testBuilding3 = BuildingEntry(name: "Test Building 3", thumbnail: .PlaceholderBuildings.kellerHall)
-var testBuilding4 = BuildingEntry(name: "Test Building 4", thumbnail: .PlaceholderBuildings.kellerHall)
-var testBuilding5 = BuildingEntry(name: "Test Building 5", thumbnail: .PlaceholderBuildings.kellerHall)
+var testNode1 = BuildingEntry(name: "Test Building 1", navID: "tb1a", thumbnail: "keller-hall")
+var testNode2 = GraphNode(name: "Test Building 1", navID: "tb1b")
+var testNode3 = BuildingEntry(name: "Test Building 2", navID: "tb2a", thumbnail: "keller-hall")
+var testNode4 = BuildingEntry(name: "Test Building 3", navID: "tb3a", thumbnail: "keller-hall")
+var testNode5 = GraphNode(name: "Test Building 3", navID: "tb3b")
+var testNode6 = GraphNode(name: "Test Building 3", navID: "tb3c")
+var testNode7 = BuildingEntry(name: "Test Building 4", navID: "tb4a", thumbnail: "keller-hall")
+var testNode8 = GraphNode(name: "Test Building 4", navID: "tb4b")
+var testNode9 = BuildingEntry(name: "Test Building 5", navID: "tb5a", thumbnail: "keller-hall")
 
-var testNode1 = GraphNode(nodeID: "tb1a", building: testBuilding1)
-var testNode2 = GraphNode(nodeID: "tb1b", building: testBuilding1)
-var testNode3 = GraphNode(nodeID: "tb2a", building: testBuilding2)
-var testNode4 = GraphNode(nodeID: "tb3a", building: testBuilding3)
-var testNode5 = GraphNode(nodeID: "tb3b", building: testBuilding3)
-var testNode6 = GraphNode(nodeID: "tb3c", building: testBuilding3)
-var testNode7 = GraphNode(nodeID: "tb4a", building: testBuilding4)
-var testNode8 = GraphNode(nodeID: "tb4b", building: testBuilding4)
-var testNode9 = GraphNode(nodeID: "tb5a", building: testBuilding5)
-
-let previewShortNavRoute = [testNode1, testNode3, testNode4]
-
-func previewNavRoute() -> [GraphNode] {
-    return [testNode1, testNode2, testNode3, testNode4, testNode5, testNode6, testNode7, testNode8, testNode9]
-}
+let previewShortNavRoute: [PathStep] = [testNode1, testNode3, testNode4]
+let previewNavRoute: [PathStep] = [testNode1, testNode2, testNode3, testNode4, testNode5, testNode6, testNode7, testNode8, testNode9]

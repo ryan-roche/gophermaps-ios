@@ -25,7 +25,7 @@ struct PreviewBuildingCard: View {
             Spacer()
             
             // MARK: Thumbnail image
-            Image(building.thumbnail)
+            Image(uiImage: UIImage(named: "thumbnails/\(building.thumbnail)") ?? UIImage())
                 .resizable()
                 .scaledToFill()
                 .frame(width:120, height:picFrameHeight)

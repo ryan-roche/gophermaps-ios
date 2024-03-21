@@ -7,10 +7,9 @@
 
 import SwiftUI
 
-struct BuildingEntry: Hashable {
+// Represents the nodes in the graph database with the BuildingKey label
+struct BuildingEntry: Hashable, Codable, PathStep {
     let name: String
-    let thumbnail: ImageResource
-    
-    // TODO: remove this
-    var destinations = Set<BuildingEntry>()
+    let navID: String
+    let thumbnail: String
 }

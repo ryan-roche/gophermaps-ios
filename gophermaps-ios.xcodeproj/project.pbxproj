@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		940732802BA13D27007E3E2A /* BackendInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9407327F2BA13D27007E3E2A /* BackendInterface.swift */; };
+		940732802BA13D27007E3E2A /* Backend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9407327F2BA13D27007E3E2A /* Backend.swift */; };
 		940732822BA1532A007E3E2A /* InstructionNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940732812BA1532A007E3E2A /* InstructionNavigator.swift */; };
 		946AE4672B96FED700121A47 /* PreviewBuildingCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 946AE4662B96FED700121A47 /* PreviewBuildingCard.swift */; };
 		9474FF582B8AC45D00C48C7A /* gophermaps_iosApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9474FF572B8AC45D00C48C7A /* gophermaps_iosApp.swift */; };
@@ -28,6 +28,7 @@
 		949A22E82B90F7D6002B003C /* RouteUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949A22E72B90F7D6002B003C /* RouteUtils.swift */; };
 		949A22F02B90FBC9002B003C /* gophermaps_iosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949A22EF2B90FBC9002B003C /* gophermaps_iosTests.swift */; };
 		949F52752B8D398600158803 /* MenuBuildingCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 949F52742B8D398600158803 /* MenuBuildingCard.swift */; };
+		94D8B61C2BAC898100915F95 /* PathStepProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94D8B61B2BAC898100915F95 /* PathStepProtocol.swift */; };
 		94F4998A2BA12BFD007ED348 /* RouteGoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F499892BA12BFD007ED348 /* RouteGoButton.swift */; };
 		94F4BBAF2BA67C5200B7A800 /* SettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F4BBAE2BA67C5200B7A800 /* SettingsPage.swift */; };
 		94F7A27F2B8FDF0100FD6628 /* InstructionFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94F7A27E2B8FDF0100FD6628 /* InstructionFileView.swift */; };
@@ -47,7 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		9407327F2BA13D27007E3E2A /* BackendInterface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackendInterface.swift; sourceTree = "<group>"; };
+		9407327F2BA13D27007E3E2A /* Backend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Backend.swift; sourceTree = "<group>"; };
 		940732812BA1532A007E3E2A /* InstructionNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionNavigator.swift; sourceTree = "<group>"; };
 		946AE4662B96FED700121A47 /* PreviewBuildingCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewBuildingCard.swift; sourceTree = "<group>"; };
 		9474FF542B8AC45D00C48C7A /* gophermaps-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "gophermaps-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -69,6 +70,8 @@
 		949A22ED2B90FBC9002B003C /* gophermaps-iosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "gophermaps-iosTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		949A22EF2B90FBC9002B003C /* gophermaps_iosTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gophermaps_iosTests.swift; sourceTree = "<group>"; };
 		949F52742B8D398600158803 /* MenuBuildingCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBuildingCard.swift; sourceTree = "<group>"; };
+		94D8B61B2BAC898100915F95 /* PathStepProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathStepProtocol.swift; sourceTree = "<group>"; };
+		94DBB81C2BA8E80500F7AA6B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		94F499892BA12BFD007ED348 /* RouteGoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RouteGoButton.swift; sourceTree = "<group>"; };
 		94F4BBAE2BA67C5200B7A800 /* SettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPage.swift; sourceTree = "<group>"; };
 		94F7A27E2B8FDF0100FD6628 /* InstructionFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionFileView.swift; sourceTree = "<group>"; };
@@ -100,7 +103,7 @@
 			isa = PBXGroup;
 			children = (
 				949A22E72B90F7D6002B003C /* RouteUtils.swift */,
-				9407327F2BA13D27007E3E2A /* BackendInterface.swift */,
+				9407327F2BA13D27007E3E2A /* Backend.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -151,6 +154,7 @@
 		9474FF562B8AC45D00C48C7A /* gophermaps-ios */ = {
 			isa = PBXGroup;
 			children = (
+				94DBB81C2BA8E80500F7AA6B /* Info.plist */,
 				949F52762B8D399800158803 /* Views */,
 				9411AD562B906268006E7FB4 /* Utils */,
 				94812A7F2B8E57F70076C3F9 /* Models */,
@@ -181,6 +185,7 @@
 			children = (
 				94812A802B8E58920076C3F9 /* BuildingEntry.swift */,
 				949A22E12B90ECCE002B003C /* GraphNode.swift */,
+				94D8B61B2BAC898100915F95 /* PathStepProtocol.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -322,10 +327,11 @@
 				9474FF582B8AC45D00C48C7A /* gophermaps_iosApp.swift in Sources */,
 				946AE4672B96FED700121A47 /* PreviewBuildingCard.swift in Sources */,
 				94F7A2852B90052100FD6628 /* StartingPointSelect.swift in Sources */,
-				940732802BA13D27007E3E2A /* BackendInterface.swift in Sources */,
+				940732802BA13D27007E3E2A /* Backend.swift in Sources */,
 				94812A812B8E58920076C3F9 /* BuildingEntry.swift in Sources */,
 				949A22E82B90F7D6002B003C /* RouteUtils.swift in Sources */,
 				94F7A2812B9004AD00FD6628 /* RouteSteps.swift in Sources */,
+				94D8B61C2BAC898100915F95 /* PathStepProtocol.swift in Sources */,
 				949F52752B8D398600158803 /* MenuBuildingCard.swift in Sources */,
 				94F4998A2BA12BFD007ED348 /* RouteGoButton.swift in Sources */,
 				94812A832B8E5A220076C3F9 /* PreviewBuildingList.swift in Sources */,
@@ -483,6 +489,7 @@
 				DEVELOPMENT_TEAM = GMBKLQ776M;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "gophermaps-ios/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = GopherMaps;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -520,6 +527,7 @@
 				DEVELOPMENT_TEAM = GMBKLQ776M;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "gophermaps-ios/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = GopherMaps;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.navigation";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
