@@ -123,7 +123,7 @@ struct RoutesApiTestResult: View {
                 Text("Something went wrong")
             } else {
                 List {
-                    ForEach(response, id:\.self.name) { entry in
+                    ForEach(response, id:\.self.navID) { entry in
                         Section {
                             Text(entry.name)
                             Text(entry.navID)
@@ -133,12 +133,12 @@ struct RoutesApiTestResult: View {
                         Button("Download Route Data") {
                             print("Downloading...")
                             Task {
+                                dataDownloadStatus = .waiting
                                 if await BackendStubs.downloadRouteData(route: response) {
                                     dataDownloadStatus = .succeeded
                                 } else {
                                     dataDownloadStatus = .failed
                                 }
-                                dataDownloadStatus = .waiting
                             }
                         }
                         Spacer()

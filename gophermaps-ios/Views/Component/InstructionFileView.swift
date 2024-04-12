@@ -19,7 +19,7 @@ struct InstructionFileView: View {
                 // attempts to read file content into a string
                 markdownContent = try MarkdownContent(String(contentsOf: markdownURL))
             } else {
-                markdownContent = MarkdownContent("Failed to download file.")
+                markdownContent = MarkdownContent("Failed to generate file URL.")
             }
         } catch {
             // this should only happen if something catastrophic happened with downloading the file
@@ -43,7 +43,9 @@ struct InstructionFileView: View {
     struct PreviewWrapper: View {
         @State var filename = "test-instructions"
         var body: some View {
-            InstructionFileView(filename: $filename)
+            ScrollView {
+                InstructionFileView(filename: $filename)
+            }
         }
     }
     return PreviewWrapper()

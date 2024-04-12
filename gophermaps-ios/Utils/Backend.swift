@@ -25,6 +25,7 @@ protocol APIHandler {
     static func getDestinations(start: BuildingEntry) async throws -> [BuildingEntry]
     static func getRoute(start: BuildingEntry, end: BuildingEntry) async throws -> [any PathStep]
     static func downloadRouteData(route: [any PathStep]) async -> Bool
+    static func downloadThumbnails(buildings: [BuildingEntry]) async -> Bool
 }
 
 @Observable final class Backend: APIHandler {
@@ -87,7 +88,6 @@ protocol APIHandler {
     }
     
     // Gets an array of buildingEntry objects representing the buildings reachable from a given building entry
-    // TODO: Decode JSON into buildingEntry Swift objects
     static func getDestinations(start: BuildingEntry) async throws -> [BuildingEntry] {
         // Build the API request URL using the server IP
         guard let url = URL(string: "http://\(UserDefaults.standard.string(forKey: "serverAddress") ?? "0.0.0.0"):8080/destinations/\(start.navID)") else {
@@ -142,6 +142,7 @@ protocol APIHandler {
     }
     
     // Asynchronously download all of the instruction data for the given route
+    // TODO: Implement this
     static func downloadRouteData(route: [PathStep]) async -> Bool {
         print("Downloading Route Data")
         do { 
@@ -153,6 +154,19 @@ protocol APIHandler {
             print("Download Failed")
             return false
         }
+    }
+    
+    // Asynchronously download the thumbnail images for the buildings in the given list
+    // TODO: Implement this
+    static func downloadThumbnails(buildings: [BuildingEntry]) async -> Bool {
+        // DownloadSuccessCount = 0
+        // Iterate over the building list. For each:
+            // Build URL for the image file
+            // Download the image file to documents/thumbnails
+            // Increment downloadSuccessCount appropriately
+        
+        // Return true if all downloads were successful
+        return true
     }
 }
 
@@ -193,43 +207,97 @@ protocol APIHandler {
         }
         
         do {
+            // Generate URL to documents directory
             let docsURL = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
             print("docsURL: \(docsURL)")
-            // Create directory for route
-            let dirURL = docsURL.appendingPathComponent("kh1a-th1a")
-            try FileManager.default.createDirectory(at: dirURL, withIntermediateDirectories: false)
-            print("Created route directory")
+        
             
-            // Copy files to route directory
-            let destinationURL = docsURL.appendingPathComponent("kh1a-th1a/instructions.md")
+            // MARK: tb1a-tb2a
+            // Generate URL for edge directory
+            var dirURL = docsURL.appendingPathComponent("tb1a-tb2a")
+            
+            // Delete edge directory if it already exists
+            if FileManager.default.fileExists(atPath: dirURL.path) {
+                try FileManager.default.removeItem(at: dirURL)
+                print("Removed existing directory")
+            }
+            
+            // Create directory for edge
+            try FileManager.default.createDirectory(at: dirURL, withIntermediateDirectories: false)
+            print("Created edge directory")
+            
+            // Copy files to edge directory
+            print("Copying files for tb1a-tb2a")
+            
+            // instructions.md
+            guard let sourceURL = Bundle.main.url(forResource: "tb1a-tb2a", withExtension: "md") else {
+                print("Failed to copy tb1a-tb2a/instructions.md")
+                return false
+            }
+            var destinationURL = docsURL.appendingPathComponent("tb1a-tb2a/instructions.md")
             try FileManager.default.copyItem(at: sourceURL, to: destinationURL)
-            print("Copied instructions to \(destinationURL)")
+            
+            // test-instructions-1.png
+            guard let sourceURL = Bundle.main.url(forResource: "test-instructions-1", withExtension: "png") else {
+                print("Failed to copy tb1a-tb2a/test-instructions-1.png")
+                return false
+            }
+            destinationURL = docsURL.appendingPathComponent("tb1a-tb2a/test-instructions-1.png")
+            try FileManager.default.copyItem(at: sourceURL, to: destinationURL)
+            
+            
+            // MARK: tb2a-tb3a
+            // Generate URL for edge directory
+            dirURL = docsURL.appendingPathComponent("tb2a-tb3a")
+            
+            // Delete edge directory if already present
+            if FileManager.default.fileExists(atPath: dirURL.path) {
+                try FileManager.default.removeItem(at: dirURL)
+                print("Removed existing directory")
+            }
+            
+            // Create directory for edge
+            try FileManager.default.createDirectory(at: dirURL, withIntermediateDirectories: false)
+            print("Created edge directory")
+            
+            // Copy files to edge directory
+            print("Copying files for tb2a-tb3a")
+            
+            // instructions.md
+            guard let sourceURL = Bundle.main.url(forResource: "tb2a-tb3a", withExtension: "md") else {
+                print("Failed to copy tb2a-tb3a/instructions.md")
+                return false
+            }
+            destinationURL = docsURL.appendingPathComponent("tb2a-tb3a/instructions.md")
+            try FileManager.default.copyItem(at: sourceURL, to: destinationURL)
+            
+            //test-instructions-2.png
+            guard let sourceURL = Bundle.main.url(forResource: "test-instructions-2", withExtension: "png") else {
+                print("Failed to copy tb2a-tb3a/test-instructions-2.png")
+                return false
+            }
+            destinationURL = docsURL.appendingPathComponent("tb2a-tb3a/test-instructions-2.png")
+            try FileManager.default.copyItem(at: sourceURL, to:destinationURL)
+            
         } catch {
-            print("Failed to copy instructions")
+            print("Failed to copy instructions!")
+            print(error)
             return false
         }
         
-        // Images for instructions
-        for i in 1...2 {
-            print("Copying image \(i) to documents")
-            
-            guard let sourceURL = Bundle.main.url(forResource: "test-instructions-\(i)", withExtension: "png") else {
-                print("Failed to find image \(i) in bundle")
-                return false
-            }
-            
-            do {
-                let docsURL = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-                print("docsURL: \(docsURL)")
-                let destinationURL = docsURL.appendingPathComponent("kh1a-th1a/test-instructions-\(i).png")
-                try FileManager.default.copyItem(at: sourceURL, to: destinationURL)
-                print("Copied image \(i) to documents")
-            } catch {
-                print("Failed to copy image \(i)")
-                return false
-            }
-        }
-        
         return true
+    }
+    
+    static func downloadThumbnails(buildings: [BuildingEntry]) async -> Bool {
+        // Copy preview thumbnails from bundle to documents
+        var successfulCopies = 0
+        
+        // Create thumbnails directory if it doesn't exist
+        
+        
+        // Loop through buildings, copying the corresponding thumbnails
+        
+        
+        return successfulCopies == buildings.count
     }
 }
