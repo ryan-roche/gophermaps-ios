@@ -22,7 +22,7 @@ struct InstructionNavigator: View {
     
     var body: some View {
         ScrollView {
-            InstructionFileView(filename: $mdFileName).padding(.bottom, 52)
+            InstructionFileView(edgeName: $mdFileName).padding(.bottom, 52)
         }.overlay(alignment: .bottom) {
             HStack {
                 Button("Back") {

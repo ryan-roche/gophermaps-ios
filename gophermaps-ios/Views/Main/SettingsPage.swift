@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct SettingsPage: View {
-    @Environment(\.dismiss) var dismiss
-    
-    @State var showDevSettings = false
+    @Binding var isPresenting : Bool
     
     var body: some View {
         VStack {
@@ -26,13 +24,25 @@ struct SettingsPage: View {
                 
             }.listStyle(.insetGrouped)
         }.toolbar {
-            ToolbarItem(placement: .automatic) {Button("Done") { dismiss() } }
+            ToolbarItem(placement: .automatic) {Button("Done") { isPresenting = false } }
+        }
+    }
+}
+
+struct PreviewWrapper: View {
+    @State var showingSettings = true
+    
+    var body: some View {
+        NavigationStack {
+            Button("Show Settings") { showingSettings = true }
+                .sheet(isPresented: $showingSettings, content: {
+                    SettingsPage(isPresenting: $showingSettings)
+                        .navigationTitle("Settings")
+                })
         }
     }
 }
 
 #Preview {
-    NavigationStack {
-        SettingsPage().navigationTitle("Settings")
-    }
+    PreviewWrapper()
 }

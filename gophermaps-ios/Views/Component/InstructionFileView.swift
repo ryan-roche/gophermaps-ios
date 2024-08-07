@@ -10,17 +10,15 @@ import MarkdownUI
 
 struct InstructionFileView: View {
     private let markdownContent : MarkdownContent
-    @Binding var filename: String
+    @Binding var edgeName: String
     
-    init(filename: Binding<String>) {
-        self._filename = filename
+    init(edgeName: Binding<String>) {
+        self._edgeName = edgeName
         do {
-            if let markdownURL = Bundle.main.url(forResource: filename.wrappedValue, withExtension: "md") {
-                // attempts to read file content into a string
-                markdownContent = try MarkdownContent(String(contentsOf: markdownURL))
-            } else {
-                markdownContent = MarkdownContent("Failed to generate file URL.")
-            }
+            let docsURL = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+            let fileURL = docsURL.appendingPathComponent("\(edgeName.wrappedValue)/instructions.md")
+            markdownContent = try MarkdownContent(String(contentsOf: fileURL))
+            
         } catch {
             // this should only happen if something catastrophic happened with downloading the file
             markdownContent = MarkdownContent("Failed to load file.")
@@ -41,10 +39,10 @@ struct InstructionFileView: View {
 
 #Preview {
     struct PreviewWrapper: View {
-        @State var filename = "test-instructions"
+        @State var edgeName = "tb1a-tb2a"
         var body: some View {
             ScrollView {
-                InstructionFileView(filename: $filename)
+                InstructionFileView(edgeName: $edgeName)
             }
         }
     }

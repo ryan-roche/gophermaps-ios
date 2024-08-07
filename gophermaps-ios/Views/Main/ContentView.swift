@@ -22,7 +22,7 @@ struct ContentView: View {
                 }
                 .sheet(isPresented: $showSettings, content: {
                     NavigationStack {
-                        SettingsPage().navigationTitle("Settings")
+                        SettingsPage(isPresenting: $showSettings).navigationTitle("Settings")
                     }
                 })
         }
