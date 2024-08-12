@@ -5,26 +5,28 @@
 //  Created by Ryan Roche on 8/12/24.
 //
 // TODO: Figure out how to get FrostedGlassView to respect safe zone, etc.
+// TODO: Fix updating blurRadius values
 
 import SwiftUI
 
 struct previewExampleCard: View {
-    @State var blurRadius: CGFloat = 8.0
+    let blurRadius = 1.0
     
     var body: some View {
         ZStack {
             FrostedGlassView(
                 effect: .systemUltraThinMaterial,
                 blurRadius: blurRadius)
-                .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-        }.frame(width: 200, height: 200)
+            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+        }
+        .frame(width:200, height:200)
     }
 }
 
 struct FrostedGlassView: UIViewRepresentable {
     var effect: UIBlurEffect.Style
-    var blurRadius: CGFloat = 0.0
-    var saturation: CGFloat = 1.0
+    @State var blurRadius: CGFloat = 0.0
+    @State var saturation: CGFloat = 1.0
     
     func makeUIView(context: Context) -> UIVisualEffectView {
         let view = UIVisualEffectView(effect: UIBlurEffect(style: effect))
