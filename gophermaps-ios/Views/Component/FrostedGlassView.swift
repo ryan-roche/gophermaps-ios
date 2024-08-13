@@ -4,7 +4,6 @@
 //
 //  Created by Ryan Roche on 8/12/24.
 //
-// TODO: Figure out how to get FrostedGlassView to respect safe zone, etc.
 
 import SwiftUI
 
@@ -46,10 +45,8 @@ struct FrostedGlassView: UIViewRepresentable {
     }
     
     func updateUIView(_ uiView: UIVisualEffectView, context: Context) {
-        let updatedEffect = UIBlurEffect(style: effect)
         uiView.gaussianRadius = blurRadius
         uiView.saturationLevel = saturation
-        uiView.effect = updatedEffect
     }
 }
 
@@ -123,6 +120,12 @@ extension NSObject {
 }
 
 #Preview {
+    FrostedGlassView(effect:.systemMaterialDark)
+        .clipShape(RoundedRectangle(cornerRadius:8, style:.continuous))
+        .padding()
+}
+
+#Preview("Framed Card Example") {
     ZStack {
         Circle()
             .frame(width: 500, height:500)
