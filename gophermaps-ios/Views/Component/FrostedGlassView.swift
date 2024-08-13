@@ -5,12 +5,11 @@
 //  Created by Ryan Roche on 8/12/24.
 //
 // TODO: Figure out how to get FrostedGlassView to respect safe zone, etc.
-// TODO: Fix updating blurRadius values
 
 import SwiftUI
 
 struct previewExampleCard: View {
-    let blurRadius = 1.0
+    @State var blurRadius = 2.0
     
     var body: some View {
         ZStack {
@@ -18,6 +17,17 @@ struct previewExampleCard: View {
                 effect: .systemUltraThinMaterial,
                 blurRadius: blurRadius)
             .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+            
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                .stroke(
+                    .linearGradient(
+                        colors:[.white.opacity(0.7), .clear, .cyan.opacity(0.01), .green.opacity(0.7)],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing)
+                )
+            
+            Slider(value: $blurRadius, in: 0...10, step: 0.1)
+                .padding()
         }
         .frame(width:200, height:200)
     }
@@ -25,8 +35,8 @@ struct previewExampleCard: View {
 
 struct FrostedGlassView: UIViewRepresentable {
     var effect: UIBlurEffect.Style
-    @State var blurRadius: CGFloat = 0.0
-    @State var saturation: CGFloat = 1.0
+    var blurRadius: CGFloat = 0.0
+    var saturation: CGFloat = 1.0
     
     func makeUIView(context: Context) -> UIVisualEffectView {
         let view = UIVisualEffectView(effect: UIBlurEffect(style: effect))
@@ -37,9 +47,9 @@ struct FrostedGlassView: UIViewRepresentable {
     
     func updateUIView(_ uiView: UIVisualEffectView, context: Context) {
         let updatedEffect = UIBlurEffect(style: effect)
-        uiView.effect = updatedEffect
         uiView.gaussianRadius = blurRadius
         uiView.saturationLevel = saturation
+        uiView.effect = updatedEffect
     }
 }
 
@@ -114,7 +124,18 @@ extension NSObject {
 
 #Preview {
     ZStack {
-        Image("dummy1")
+        Circle()
+            .frame(width: 500, height:500)
+            .offset(x:200, y:100)
+            .foregroundStyle(LinearGradient(colors:[.blue, .cyan, .green], startPoint: .topLeading, endPoint: .bottomTrailing))
+        Circle()
+            .frame(width: 400, height:400)
+            .offset(x:-150, y:-100)
+            .foregroundStyle(LinearGradient(colors:[.blue, .indigo, .purple], startPoint: .topLeading, endPoint: .bottomTrailing))
+        Circle()
+            .frame(width: 300, height:300)
+            .offset(x:-120, y:200)
+            .foregroundStyle(LinearGradient(colors:[.purple, .red, .orange], startPoint: .topLeading, endPoint: .bottomTrailing))
         
         previewExampleCard()
     }
