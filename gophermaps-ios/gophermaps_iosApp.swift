@@ -6,6 +6,27 @@
 //
 
 import SwiftUI
+import OpenAPIRuntime
+import OpenAPIURLSession
+
+// Singleton API Client (shonal would be so proud...)
+//#if DEBUG
+//let apiClient = MockAPIClient()
+//#else
+let apiClient = Client(
+    serverURL: try! Servers.server1(),
+    transport: URLSessionTransport()
+)
+//#endif
+
+let thumbnailBaseURL = "https://raw.githubusercontent.com/ryan-roche/gophermaps-data/main/thumbnails"
+
+enum apiCallState {
+    case idle
+    case loading
+    case done
+    case failed // TODO: add error reason parameter
+}
 
 @main
 struct gophermaps_iosApp: App {

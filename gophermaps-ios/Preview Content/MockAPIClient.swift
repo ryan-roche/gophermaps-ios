@@ -10,67 +10,83 @@ import Foundation
 struct MockAPIClient: APIProtocol {
     
     func getRoute(_ input: Operations.getRoute.Input) async throws -> Operations.getRoute.Output {
+        try await Task.sleep(for: .seconds(1))
+        
         return .ok(
             Operations.getRoute.Output.Ok(
-                body: .json([
-                    Components.Schemas.NavigationNodeModel(
-                        buildingName: "Dummy 1",
-                        floor: "1",
-                        navID: "db1"),
-                    Components.Schemas.NavigationNodeModel(
-                        buildingName: "Dummy 1",
-                        floor: "2",
-                        navID: "db1a"),
-                    Components.Schemas.NavigationNodeModel(
-                        buildingName: "Dummy 2",
-                        floor: "3",
-                        navID: "db2"),
-                    Components.Schemas.NavigationNodeModel(
-                        buildingName: "Dummy 3",
-                        floor: "3",
-                        navID:" db3")
-                ])
+                body: .json(Components.Schemas.RouteResponseModel.init(
+                    pathNodes: [
+                        Components.Schemas.NavigationNodeModel(
+                            buildingName: "Test Building 1",
+                            floor: "1",
+                            navID: "tb1",
+                            image: "dummy1.png"),
+                        Components.Schemas.NavigationNodeModel(
+                            buildingName: "Test Building 2",
+                            floor: "2",
+                            navID: "tb2",
+                            image: "dummy2.png"),
+                        Components.Schemas.NavigationNodeModel(
+                            buildingName: "Test Building 2",
+                            floor: "1",
+                            navID: "tb2a",
+                            image: "dummy2.png"),
+                        Components.Schemas.NavigationNodeModel(
+                            buildingName: "Test Building 3",
+                            floor: "1",
+                            navID: "tb3",
+                            image: "dummy1.png")
+                    ],
+                    buildingThumbnails: .init(additionalProperties: [
+                        "Test Building 1": "dummy1.png",
+                        "Test Building 2": "dummy2.png",
+                        "Test Building 3": "dummy1.png"
+                    ])
+                ))
             )
         )
     }
     
     func getDestinationsForBuilding(_ input: Operations.getDestinationsForBuilding.Input) async throws -> Operations.getDestinationsForBuilding.Output {
+        try await Task.sleep(for: .seconds(1))
         return .ok(
             Operations.getDestinationsForBuilding.Output.Ok(
                 body: .json([
                     Components.Schemas.BuildingEntryModel(
                         buildingName: "Dummy Building",
                         thumbnail: "dummy1.png",
-                        navID: "db1"),
+                        keyID: "db1"),
                     Components.Schemas.BuildingEntryModel(
                         buildingName: "Dummy Building",
                         thumbnail: "dummy2.png",
-                        navID: "db2"),
+                        keyID: "db2"),
                     Components.Schemas.BuildingEntryModel(
                         buildingName: "Dummy Building",
-                        thumbnail: "dummy3.png",
-                        navID: "db3"),
+                        thumbnail: "dummy1.png",
+                        keyID: "db3"),
                 ])
             )
         )
     }
     
     func getBuildingsForArea(_ input: Operations.getBuildingsForArea.Input) async throws -> Operations.getBuildingsForArea.Output {
+        try await Task.sleep(for: .seconds(1))
+        
         return .ok(
             Operations.getBuildingsForArea.Output.Ok(
                 body: .json([
                     Components.Schemas.BuildingEntryModel(
                         buildingName: "Dummy Building 1",
                         thumbnail: "dummy1.png",
-                        navID: "db1"),
+                        keyID: "db1"),
                     Components.Schemas.BuildingEntryModel(
                         buildingName: "Dummy Building 2",
                         thumbnail: "dummy2.png",
-                        navID: "db2"),
+                        keyID: "db2"),
                     Components.Schemas.BuildingEntryModel(
                         buildingName: "Dummy Building 3",
-                        thumbnail: "dummy3.png",
-                        navID: "db3")
+                        thumbnail: "dummy1.png",
+                        keyID: "db3")
                 ])
             )
         )
@@ -81,8 +97,11 @@ struct MockAPIClient: APIProtocol {
             Operations.getAreas.Output.Ok(
                 body: .json([
                     Components.Schemas.AreaModel(
-                        name: Components.Schemas.AreaModel.namePayload.init(value1: .EastBank),
-                        thumbnail: "dummy1.png")
+                        name: Components.Schemas.AreaModel.namePayload.init(value1: .East_space_Bank),
+                        thumbnail: "dummy1.png"),
+                    Components.Schemas.AreaModel(
+                        name: Components.Schemas.AreaModel.namePayload.init(value1: .Test_space_Buildings),
+                        thumbnail: "dummy2.png")
                 ]))
         )
     }

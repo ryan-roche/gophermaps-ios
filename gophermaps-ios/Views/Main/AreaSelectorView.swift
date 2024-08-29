@@ -4,55 +4,61 @@
 //
 //  Created by Ryan Roche on 8/10/24.
 //
+// TODO: Fix on-tap appearance (non-MVP)
 
 import SwiftUI
-import OpenAPIRuntime
-import OpenAPIURLSession
 
 struct AreaSelectorView: View {
     @State var areas: [Components.Schemas.AreaModel] = []
-    @State var areasHaveLoaded = false
+    @State var areaLoadStatus: apiCallState = .idle
     
     var body: some View {
-        if areasHaveLoaded {
-            List {
-                ForEach(areas, id: \.self) {area in
-                    Text(area.name.value1.rawValue)
-                }
-            }
-        } else {
-            ProgressView("Getting Areas...")
-                .onAppear {
+        switch areaLoadStatus {
+            case .idle:
+                Color.clear.onAppear {
+                    areaLoadStatus = .loading
                     Task { try! await populateAreas() }
                 }
+            case .loading:
+                ProgressView("Getting Areas...")
+            case .done:
+                VStack(spacing:16) {
+                    ForEach(areas, id: \.self) {area in
+                        NavigationLink(
+                            destination: {
+                                BuildingSelectorView(area: area)
+                                    .navigationTitle("Buildings")
+                            },
+                            label: {
+                                ImageCard(area: area, showsChevron: true)
+                                    .shadow(radius:4, y:2)
+                            }
+                        ).buttonStyle(.plain)
+                    }
+                }.padding()
+            case .failed:
+                ContentUnavailableView("Failed to load Areas", systemImage: "exclamationmark.magnifyingglass")
         }
     }
     
-    let client: Client
-    
-    init() {
-        self.client = Client(
-            serverURL: try! Servers.server1(),
-            transport: URLSessionTransport()
-        )
-    }
-    
     func populateAreas() async throws {
-        let response = try await client.getAreas(Operations.getAreas.Input())
+        let response = try await apiClient.getAreas(Operations.getAreas.Input())
         
         switch response {
             case let .ok(okResponse):
                 self.areas = try okResponse.body.json
-                areasHaveLoaded = true
-                break
+                areaLoadStatus = .done
             
             case .undocumented(statusCode: let statusCode, _):
                 print("getAreas failed: \(statusCode)")
-                break
+                areaLoadStatus = .failed
         }
     }
 }
 
 #Preview {
-    AreaSelectorView()
+    NavigationStack {
+        AreaSelectorView()
+            .navigationTitle("Available Areas")
+    }
 }
