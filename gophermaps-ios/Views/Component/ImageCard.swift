@@ -119,7 +119,7 @@ struct ImageCard: View {
         area: Components.Schemas.AreaModel(
             name: Components.Schemas.AreaModel.namePayload(
                 value1: .East_space_Bank),
-            thumbnail: "EastBankk.jpg"),
+            thumbnail: "EastBank.jpg"),
         showsChevron: true
     )
     .padding()

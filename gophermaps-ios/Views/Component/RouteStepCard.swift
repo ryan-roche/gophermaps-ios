@@ -18,7 +18,7 @@ struct RouteStepCard: View {
             case .changeFloor(let floor):
                 return "**Move** to floor \(floor)"
             case .changeBuilding:
-                return "**Move** to the next building"
+                return "**Follow** signs to next building"
         }
     }
     
@@ -29,7 +29,16 @@ struct RouteStepCard: View {
             case .changeFloor:
                 return "figure.stairs"
             case .changeBuilding:
-                return "figure.walk.arrival"
+                return "sign.gopher-way.fill"
+        }
+    }
+    
+    func symbolImageViewWrapper() -> Image {
+        if case .changeBuilding(_) = step {
+            return Image(self.icon)
+                .symbolRenderingMode(.hierarchical)
+        } else {
+            return Image(systemName: self.icon)
         }
     }
     
@@ -44,7 +53,7 @@ struct RouteStepCard: View {
         }.background {
             FrostedGlassView(effect: .systemMaterial, blurRadius: 4)
                 .overlay(alignment:.trailing) {
-                    Image(systemName: self.icon)
+                    symbolImageViewWrapper()
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .padding(-3)
