@@ -4,6 +4,7 @@
 //
 //  Created by Ryan Roche on 8/13/24.
 //
+// TODO: Fix search bar visibility (use wrapper ViewBuilder??)
 
 import SwiftUI
 
@@ -11,7 +12,17 @@ struct BuildingSelectorView: View {
     @State var buildings: [Components.Schemas.BuildingEntryModel] = []
     @State var buildingLoadStatus: apiCallState = .idle
     
+    @State var searchText: String = ""
+    
     let area: Components.Schemas.AreaModel
+    
+    var filteredBuildings: [Components.Schemas.BuildingEntryModel] {
+        if searchText.isEmpty {
+            return buildings
+        } else {
+            return buildings.filter { $0.buildingName.localizedCaseInsensitiveContains(searchText) }
+        }
+    }
     
     var body: some View {
         switch buildingLoadStatus {
@@ -27,25 +38,25 @@ struct BuildingSelectorView: View {
                     ContentUnavailableView("No buildings found", systemImage:"questionmark.circle.dashed")
                         .foregroundStyle(.secondary)
                 } else {
-                    ScrollView {
-                        VStack(alignment: .leading, spacing:16) {
+                    List {
+                        ForEach(filteredBuildings.sorted(by:{$0.buildingName < $1.buildingName}), id: \.self) { building in
                             
-                            Text("Where do you want to **start from**?")
-                            
-                            ForEach(buildings, id: \.self) { building in
-                                NavigationLink(
-                                    destination: {
-                                        DestinationSelectorView(building: building)
-                                            .navigationTitle("Destination")
-                                    }, label: {
-                                        ImageCard(building: building, showsChevron: true)
-                                            .shadow(radius:4, y:2)
-                                            .frame(height: 200)
-                                    }
-                                ).buttonStyle(.plain)
+                            // Workaround to hide list disclosure chevron
+                            ZStack {
+                                NavigationLink {
+                                    DestinationSelectorView(building: building).navigationTitle("Destination")
+                                } label: {
+                                    EmptyView()
+                                }
+                                ImageCard(building: building, showsChevron: true)
+                                    .shadow(radius:4, y:2)
+                                    .frame(height: 200)
                             }
-                        }.padding()
+                            .listRowSeparator(.hidden, edges: .all)
+                        }
                     }
+                    .listStyle(.plain)
+                    .searchable(text: $searchText, prompt:"Building Name")
                 }
             case .failed:
                 ContentUnavailableView("Failed to load Buildings", systemImage:"exclamationmark.magnifyingglass")
@@ -76,6 +87,6 @@ struct BuildingSelectorView: View {
         BuildingSelectorView(area: Components.Schemas.AreaModel(
             name: Components.Schemas.AreaModel.namePayload(value1: .East_space_Bank),
             thumbnail: "dummy1.png")
-        ).navigationTitle("Buildings")
+        ).navigationTitle("Start Building")
     }
 }

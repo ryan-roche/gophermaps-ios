@@ -75,7 +75,7 @@ struct RouteStepCard: View {
                             perspective: 1
                         )
                         .rotationEffect(.degrees(-15))
-                        .offset(x: -35)
+                        .offset(x: -15)
                 }
         }.compositingGroup()
         .clipShape(RoundedRectangle(cornerRadius: 8))
@@ -84,7 +84,7 @@ struct RouteStepCard: View {
 
 #Preview {
     RouteStepCard(.changeBuilding(method: .tunnel)).shadow(radius: 4, y:2)
-        .padding(.horizontal)
-    RouteStepCard(.changeFloor(to: "2")).shadow(radius: 4, y: 2).padding(.horizontal)
-    RouteStepCard(.startAtFloor(to: "1")).shadow(radius: 4, y: 2).padding(.horizontal)
+        .padding(.horizontal).padding(.horizontal)
+            RouteStepCard(.changeFloor(to: "2")).shadow(radius: 4, y: 2).padding(.horizontal).padding(.horizontal)
+                RouteStepCard(.startAtFloor(to: "1")).shadow(radius: 4, y: 2).padding(.horizontal).padding(.horizontal)
 }

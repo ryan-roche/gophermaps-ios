@@ -4,7 +4,7 @@
 //
 //  Created by Ryan Roche on 8/15/24.
 //
-// TODO: Remove self from destinations
+// TODO: ditto from BuildingSelectorView
 
 import SwiftUI
 
@@ -12,7 +12,17 @@ struct DestinationSelectorView: View {
     @State var destinations: [Components.Schemas.BuildingEntryModel] = []
     @State var destinationLoadStatus: apiCallState = .idle
     
+    @State var searchText: String = ""
+    
     let building: Components.Schemas.BuildingEntryModel
+    
+    var filteredDestinations: [Components.Schemas.BuildingEntryModel] {
+        if searchText.isEmpty {
+            return destinations
+        } else {
+            return destinations.filter { $0.buildingName.localizedCaseInsensitiveContains(searchText) }
+        }
+    }
     
     var body: some View {
         switch destinationLoadStatus {
@@ -27,26 +37,25 @@ struct DestinationSelectorView: View {
                 if destinations.isEmpty {
                     ContentUnavailableView("No destinations found", systemImage:"questionmark.circle.dashed")
                 } else {
-                    ScrollView {
-                        VStack(alignment: .leading, spacing:16) {
+                    List {
+                        ForEach(filteredDestinations.sorted(by:{$0.buildingName < $1.buildingName}), id: \.self) { destination in
                             
-                            Text("Buildings reachable from **\(building.buildingName)**")
-                            
-                            ForEach(destinations, id: \.self) { destination in
-                                NavigationLink(
-                                    destination: {
-                                        RouteDetailsView(building.keyID, destination.keyID)
-                                            .navigationTitle("Route")
-                                    }, label: {
-                                        ImageCard(building: destination, showsChevron: true)
-                                            .shadow(radius:4, y:2)
-                                            .frame(height: 200)
-                                    }
-                                ).buttonStyle(.plain)
+                            // Workaround to hide list disclosure chevron
+                            ZStack {
+                                ImageCard(building: destination, showsChevron: true)
+                                    .shadow(radius:4, y:2)
+                                    .frame(height: 200)
+                                NavigationLink {
+                                    RouteDetailsView(building.keyID, destination.keyID)
+                                } label: {
+                                    EmptyView()
+                                }
                             }
-                            
-                        }.padding()
+                            .listRowSeparator(.hidden, edges: .all)
+                        }
                     }
+                    .listStyle(.plain)
+                    .searchable(text: $searchText, prompt:"Building Name")
                 }
             case .failed:
                 ContentUnavailableView("Load failed", systemImage:"exclamationmark.magnifyingglass")

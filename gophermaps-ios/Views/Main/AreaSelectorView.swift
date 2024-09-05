@@ -27,7 +27,7 @@ struct AreaSelectorView: View {
                         NavigationLink(
                             destination: {
                                 BuildingSelectorView(area: area)
-                                    .navigationTitle("Buildings")
+                                    .navigationTitle("Start Building")
                             },
                             label: {
                                 ImageCard(area: area, showsChevron: true)
