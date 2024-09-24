@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 import OpenAPIRuntime
 import OpenAPIURLSession
 
@@ -33,6 +34,6 @@ struct gophermaps_iosApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-        }
+        }.modelContainer(for: SavedRoute.self)
     }
 }

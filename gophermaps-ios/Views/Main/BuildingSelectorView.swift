@@ -66,7 +66,8 @@ struct BuildingSelectorView: View {
     
     func populateBuildings() async throws {
         let response = try await apiClient.getBuildingsForArea(
-            Operations.getBuildingsForArea.Input(path: .init(area: .init(value1: area.name.value1))))
+            Operations.getBuildingsForArea.Input(path: .init(area: area.name))
+        )
         
         switch response {
         case let .ok(okResponse):
@@ -85,8 +86,7 @@ struct BuildingSelectorView: View {
 #Preview {
     NavigationStack {
         BuildingSelectorView(area: Components.Schemas.AreaModel(
-            name: Components.Schemas.AreaModel.namePayload(value1: .East_space_Bank),
-            thumbnail: "dummy1.png")
+            name: Components.Schemas.AreaName.East_space_Bank, thumbnail: "dummy1.png")
         ).navigationTitle("Start Building")
     }
 }

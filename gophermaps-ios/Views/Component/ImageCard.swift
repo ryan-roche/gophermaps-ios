@@ -24,7 +24,7 @@ struct ImageCard: View {
     init(area: Components.Schemas.AreaModel,
          layout: ImageCardLayoutDirection = .vertical,
          showsChevron: Bool = false) {
-        self.label = area.name.value1.rawValue
+        self.label = area.name.rawValue
         self.imageURL = URL(string: thumbnailBaseURL.appending("/areas/\(area.thumbnail)"))!
         self.layout = layout
         self.showsChevron = showsChevron
@@ -72,6 +72,8 @@ struct ImageCard: View {
                             .font(.title)
                             .fontWeight(.medium)
                             .padding([.vertical, .leading])
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.5)
                         Spacer()
                         if showsChevron {
                             Image(systemName: "chevron.forward")
@@ -117,8 +119,7 @@ struct ImageCard: View {
 #Preview("Area - Vertical") {
     ImageCard(
         area: Components.Schemas.AreaModel(
-            name: Components.Schemas.AreaModel.namePayload(
-                value1: .East_space_Bank),
+            name: Components.Schemas.AreaName.East_space_Bank,
             thumbnail: "EastBank.jpg"),
         showsChevron: true
     )
@@ -128,8 +129,7 @@ struct ImageCard: View {
 #Preview("Area - Horizontal") {
     ImageCard(
         area: Components.Schemas.AreaModel(
-            name: Components.Schemas.AreaModel.namePayload(
-                value1: .East_space_Bank),
+            name: Components.Schemas.AreaName.East_space_Bank,
             thumbnail: "EastBank.jpg"),
         layout: .horizontal,
         showsChevron: true
@@ -141,14 +141,12 @@ struct ImageCard: View {
     VStack(spacing: 16) {
         ImageCard(
             area: Components.Schemas.AreaModel(
-                name: Components.Schemas.AreaModel.namePayload(
-                    value1: .East_space_Bank),
+                name: Components.Schemas.AreaName.East_space_Bank,
                 thumbnail: "dummy1.png")
         )
         ImageCard(
             area: Components.Schemas.AreaModel(
-                name: Components.Schemas.AreaModel.namePayload(
-                    value1: .East_space_Bank),
+                name: Components.Schemas.AreaName.West_space_Bank,
                 thumbnail: "dummy2.png")
         )
     }.padding()
@@ -158,15 +156,13 @@ struct ImageCard: View {
     VStack(spacing: 16) {
         ImageCard(
             area: Components.Schemas.AreaModel(
-                name: Components.Schemas.AreaModel.namePayload(
-                    value1: .East_space_Bank),
+                name: Components.Schemas.AreaName.East_space_Bank,
                 thumbnail: "dummy1.png"),
             layout: .horizontal
         )
         ImageCard(
             area: Components.Schemas.AreaModel(
-                name: Components.Schemas.AreaModel.namePayload(
-                    value1: .East_space_Bank),
+                name: Components.Schemas.AreaName.West_space_Bank,
                 thumbnail: "dummy2.png"),
             layout: .horizontal
         )

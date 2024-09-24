@@ -5,8 +5,10 @@
 //  Created by Ryan Roche on 8/15/24.
 //
 // TODO: Modify backend to disambiguate between tunnels and skyways in the response
+// TODO: Add TipKit tip for "Save Route" button
 
 import SwiftUI
+import SwiftData
 
 /// Represents a series of RouteSteps taking place in the same building
 struct RouteBuildingGroup {
@@ -45,16 +47,61 @@ enum BuildingLink: Identifiable {
     case skyway
 }
 
+struct SaveRouteButton: View {
+    @Query var matchingSavedRoutes: [SavedRoute]
+    @Environment(\.modelContext) var context
+    
+    let start: Components.Schemas.BuildingEntryModel
+    let end: Components.Schemas.BuildingEntryModel
+    
+    init(_ start: Components.Schemas.BuildingEntryModel,
+         _ end: Components.Schemas.BuildingEntryModel) {
+        
+        self.start = start
+        self.end = end
+        
+        _matchingSavedRoutes = Query(filter: #Predicate<SavedRoute> {
+            $0.start.keyID == start.keyID && $0.end.keyID == end.keyID
+        })
+    }
+    
+    var body: some View {
+        Button {
+            if !matchingSavedRoutes.isEmpty {
+                // Get handle to model object and delete from context
+                let routeObject = matchingSavedRoutes.first!
+                context.delete(routeObject)
+            } else {
+                // Create model object and save to context
+                let routeObject = SavedRoute(start: start, end: end)
+                context.insert(routeObject)
+            }
+        } label: {
+            Image(systemName: !matchingSavedRoutes.isEmpty ? "bookmark.fill" : "bookmark")
+        }
+        .buttonBorderShape(.circle)
+        .buttonStyle(.bordered)
+    }
+}
+
 struct RouteDetailsView: View {
+    @Environment(\.modelContext) var context
+    
     @State var stepGroups: [RouteBuildingGroup] = []
     @State var routeLoadStatus: apiCallState = .idle
 
+    let startBuilding: Components.Schemas.BuildingEntryModel
+    let endBuilding: Components.Schemas.BuildingEntryModel
+    
     let startNode: String
     let endNode: String
 
-    init(_ startNode: String, _ endNode: String) {
-        self.startNode = startNode
-        self.endNode = endNode
+    init(_ start: Components.Schemas.BuildingEntryModel,
+         _ end: Components.Schemas.BuildingEntryModel) {
+        self.startBuilding = start
+        self.endBuilding = end
+        self.startNode = start.keyID
+        self.endNode = end.keyID
     }
 
     var body: some View {
@@ -68,7 +115,26 @@ struct RouteDetailsView: View {
                 ProgressView("Calculating Route...")
             case .done:
                 ScrollView {
+                    // MARK: Route Info Cards
                     VStack(spacing: 20) {
+                        HStack {
+                            Text(stepGroups[0].name)
+                                .fontWeight(.medium)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.5)
+                            Image(systemName:"arrow.forward")
+                            Text(stepGroups[stepGroups.endIndex-1].name)
+                                .fontWeight(.medium)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.5)
+                        }
+                        .padding()
+                        .background {
+                            FrostedGlassView(effect:.systemMaterial)
+                                .clipShape(RoundedRectangle(cornerRadius:8))
+                                .shadow(color:.black.opacity(0.2), radius:4, y:2)
+                        }
+                        
                         ForEach(stepGroups, id: \.name) { stepGroup in
                             Group {
                                 // ImageCard for building
@@ -116,7 +182,14 @@ struct RouteDetailsView: View {
                             }
                         }
                     }.padding()
+                }.toolbar {
+                    // MARK: Save Route Button
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        SaveRouteButton(startBuilding, endBuilding)
+                    }
                 }
+                
+                
             case .failed:
                 ContentUnavailableView("Load failed", systemImage: "exclamationmark.magnifyingglass")
                     .foregroundStyle(.secondary)
@@ -234,9 +307,23 @@ struct RouteDetailsView: View {
     }
 }
 
-#Preview {
+#Preview("RouteDetailsView (Unsaved Route)") {
     NavigationStack {
-        RouteDetailsView("tb1", "tb3")
-            .navigationTitle("Your Route")
+        RouteDetailsView(
+            Components.Schemas.BuildingEntryModel(buildingName: "Test Building", thumbnail: "dummy1.jpg", keyID: "tb1"),
+            Components.Schemas.BuildingEntryModel(buildingName: "Test Building", thumbnail: "dummy2.jpg", keyID: "tb2")
+        )
+        .navigationTitle("Your Route")
     }
+    .modelContainer(previewContainer)
+}
+
+#Preview("RouteDetailsView (Saved Route)") {
+    NavigationStack {
+        RouteDetailsView(
+            sampleRoutes[0].start, sampleRoutes[0].end
+        )
+        .navigationTitle("Your Route")
+    }
+    .modelContainer(previewContainer)
 }

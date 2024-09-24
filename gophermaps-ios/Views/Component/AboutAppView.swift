@@ -73,6 +73,10 @@ struct AboutAppView: View {
                 Text("Version \(version)")
                 Text("•").fontWeight(.bold)
                 Text("Build \(build)")
+#if DEBUG
+                Text("•").fontWeight(.bold)
+                Text("[DEBUG]")
+#endif
                 Spacer()
             }
             .font(.footnote)

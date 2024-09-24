@@ -46,7 +46,8 @@ struct DestinationSelectorView: View {
                                     .shadow(radius:4, y:2)
                                     .frame(height: 200)
                                 NavigationLink {
-                                    RouteDetailsView(building.keyID, destination.keyID)
+                                    RouteDetailsView(building, destination)
+                                        .navigationTitle("Your Route")
                                 } label: {
                                     EmptyView()
                                 }

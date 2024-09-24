@@ -97,10 +97,10 @@ struct MockAPIClient: APIProtocol {
             Operations.getAreas.Output.Ok(
                 body: .json([
                     Components.Schemas.AreaModel(
-                        name: Components.Schemas.AreaModel.namePayload.init(value1: .East_space_Bank),
+                        name: Components.Schemas.AreaName.East_space_Bank,
                         thumbnail: "dummy1.png"),
                     Components.Schemas.AreaModel(
-                        name: Components.Schemas.AreaModel.namePayload.init(value1: .Test_space_Buildings),
+                        name: Components.Schemas.AreaName.West_space_Bank,
                         thumbnail: "dummy2.png")
                 ]))
         )
