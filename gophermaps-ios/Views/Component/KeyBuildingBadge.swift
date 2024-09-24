@@ -29,15 +29,6 @@ enum BuildingBadgeType {
                 return "flag.checkered"
         }
     }
-    
-    var color: Color {
-        switch(self) {
-            case .start:
-                return .green
-            case .end:
-                return .blue
-        }
-    }
 }
 
 struct KeyBuildingBadge: View {
@@ -51,12 +42,10 @@ struct KeyBuildingBadge: View {
         Label(type.label, systemImage: type.icon)
             .font(.caption)
             .fontWeight(.semibold)
-            .foregroundStyle(type.color)
             .padding(10)
             .background {
                 FrostedGlassView(effect: .systemMaterial, blurRadius: 4)
             }.clipShape(RoundedRectangle(cornerRadius: 8))
-            .shadow(color: type.color, radius:2)
     }
 }
 
