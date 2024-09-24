@@ -4,8 +4,9 @@
 //
 //  Created by Ryan Roche on 8/15/24.
 //
-// TODO: Modify backend to disambiguate between tunnels and skyways in the response
 // TODO: Add TipKit tip for "Save Route" button
+// TODO: Add building name to "follow signs" stepcard
+// TODO: Add detailedStepsView variant for RouteStepCard
 
 import SwiftUI
 import SwiftData
@@ -149,13 +150,6 @@ struct RouteDetailsView: View {
                                         layout: .vertical
                                     )
                                     .shadow(radius: 4, y: 2)
-                                    .overlay(alignment: .topTrailing) {
-                                        KeyBuildingBadge(
-                                            stepGroup.position == .start
-                                                ? .start : .end
-                                        )
-                                        .padding(10)
-                                    }
                                     .frame(height: 200)
                                 } else {
                                     // Smaller card for intermediate buildings
@@ -174,7 +168,8 @@ struct RouteDetailsView: View {
                                     RouteStepCard(step).padding(.horizontal)
                                         .shadow(radius: 4, y: 2)
                                 }
-                            }.compositingGroup()
+                            }
+                            
                             if stepGroup.position != .end {
                                 Image(systemName: "arrow.down")
                                     .foregroundStyle(.secondary)
