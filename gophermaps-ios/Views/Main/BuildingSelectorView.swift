@@ -29,7 +29,13 @@ struct BuildingSelectorView: View {
             case .idle:
                 Color.clear.onAppear {
                     buildingLoadStatus = .loading
-                    Task { try! await populateBuildings() }
+                    Task {
+                        do {
+                            try await populateBuildings()
+                        } catch {
+                            buildingLoadStatus = .offline
+                        }
+                    }
                 }
             case .loading:
                 ProgressView("Loading Buildings...")
@@ -39,6 +45,7 @@ struct BuildingSelectorView: View {
                         .foregroundStyle(.secondary)
                 } else {
                     List {
+                        Text("What building are starting from?")
                         ForEach(filteredBuildings.sorted(by:{$0.buildingName < $1.buildingName}), id: \.self) { building in
                             
                             // Workaround to hide list disclosure chevron
@@ -58,6 +65,8 @@ struct BuildingSelectorView: View {
                     .listStyle(.plain)
                     .searchable(text: $searchText, prompt:"Building Name")
                 }
+            case .offline:
+                NetworkOfflineMessage()
             case .failed:
                 ContentUnavailableView("Failed to load Buildings", systemImage:"exclamationmark.magnifyingglass")
                     .foregroundStyle(.secondary)

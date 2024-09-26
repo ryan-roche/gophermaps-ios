@@ -17,12 +17,20 @@ struct AreaSelectorView: View {
             case .idle:
                 Color.clear.onAppear {
                     areaLoadStatus = .loading
-                    Task { try! await populateAreas() }
+                    Task {
+                        do {
+                            try await populateAreas()
+                        } catch {
+                            areaLoadStatus = .offline
+                        }
+                    }
                 }
             case .loading:
                 ProgressView("Getting Areas...")
             case .done:
                 VStack(spacing:16) {
+                    Text("Select an area to get started.")
+                        .frame(maxWidth:.infinity, alignment: .leading)
                     ForEach(areas, id: \.self) {area in
                         NavigationLink(
                             destination: {
@@ -36,6 +44,8 @@ struct AreaSelectorView: View {
                         ).buttonStyle(.plain)
                     }
                 }.padding()
+            case .offline:
+                NetworkOfflineMessage()
             case .failed:
                 ContentUnavailableView("Failed to load Areas", systemImage: "exclamationmark.magnifyingglass")
         }
@@ -59,6 +69,5 @@ struct AreaSelectorView: View {
 #Preview {
     NavigationStack {
         AreaSelectorView()
-            .navigationTitle("Available Areas")
     }
 }

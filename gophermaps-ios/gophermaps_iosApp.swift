@@ -27,6 +27,7 @@ enum apiCallState {
     case loading
     case done
     case failed // TODO: add error reason parameter
+    case offline
 }
 
 @main
