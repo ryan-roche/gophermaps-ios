@@ -111,7 +111,13 @@ struct RouteDetailsView: View {
         switch routeLoadStatus {
             case .idle:
                 Color.clear.onAppear {
-                    Task { try! await getRoute() }
+                    Task {
+                        do {
+                            try await getRoute()
+                        } catch {
+                            routeLoadStatus = .offline
+                        }
+                    }
                     routeLoadStatus = .loading
                 }
             case .loading:
@@ -187,8 +193,8 @@ struct RouteDetailsView: View {
                         SaveRouteButton(startBuilding, endBuilding)
                     }
                 }
-                
-                
+            case .offline:
+                ContentUnavailableView("You're Offline", systemImage:"wifi.slash")
             case .failed:
                 ContentUnavailableView("Load failed", systemImage: "exclamationmark.magnifyingglass")
                     .foregroundStyle(.secondary)

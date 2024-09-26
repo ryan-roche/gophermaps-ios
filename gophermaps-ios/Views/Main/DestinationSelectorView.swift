@@ -28,7 +28,13 @@ struct DestinationSelectorView: View {
         switch destinationLoadStatus {
             case .idle:
                 Color.clear.onAppear {
-                    Task { try! await getDestinations() }
+                    Task {
+                        do {
+                            try await getDestinations()
+                        } catch {
+                            destinationLoadStatus = .offline
+                        }
+                    }
                     destinationLoadStatus = .loading
                 }
             case .loading:
@@ -58,6 +64,8 @@ struct DestinationSelectorView: View {
                     .listStyle(.plain)
                     .searchable(text: $searchText, prompt:"Building Name")
                 }
+            case .offline:
+                NetworkOfflineMessage()
             case .failed:
                 ContentUnavailableView("Load failed", systemImage:"exclamationmark.magnifyingglass")
                     .foregroundStyle(.secondary)

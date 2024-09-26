@@ -10,7 +10,7 @@ import SwiftUI
 import Kingfisher
 
 
-struct BetaOnboardingView: View {
+struct FirstLaunchView: View {
     @ScaledMetric var betaBadgeXOffset: CGFloat = 6
     @ScaledMetric var betaBadgeYOffset: CGFloat = 10
     
@@ -280,7 +280,7 @@ private struct onboardingViewEntry {
         showingSheet.toggle()
     }
     .sheet(isPresented: $showingSheet) {
-        BetaOnboardingView(showing: $showingSheet)
+        FirstLaunchView(showing: $showingSheet)
             .padding(.top)
     }
     .onAppear {

@@ -21,7 +21,7 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             AreaSelectorView()
-                .navigationTitle("Select Area")
+                .navigationTitle("Areas")
                 .navigationDestination(isPresented:$isViewingSavedRoute) {
                     RouteDetailsView(
                         savedRouteSelection?.start ?? Components.Schemas.BuildingEntryModel(buildingName: "placeholder", thumbnail: "placeholder.jpg", keyID: ""),
@@ -52,7 +52,7 @@ struct ContentView: View {
                     SettingsView(showing: $showingSettings)
                 }
                 .sheet(isPresented: $showingOnboarding) {
-                    BetaOnboardingView(showing: $showingOnboarding)
+                    FirstLaunchView(showing: $showingOnboarding)
                         .padding(.top)
                 }
                 .sheet(isPresented: $showingSavedRoutes) {
