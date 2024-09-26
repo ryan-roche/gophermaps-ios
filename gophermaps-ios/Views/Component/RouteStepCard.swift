@@ -11,11 +11,13 @@ import SwiftUI
 struct RouteStepCard: View {
     let step: RouteStep
     
+    init(_ step: RouteStep) { self.step = step }
+    
     var text: String {
         switch(step) {
             case .startAtFloor(let floor):
                 return "**Start** on floor \(floor)"
-            case .changeFloor(let floor):
+            case .changeFloor(let floor, _, _, _):
                 return "**Move** to floor \(floor)"
             case .changeBuilding:
                 return "**Follow** signs to next building"
@@ -34,7 +36,7 @@ struct RouteStepCard: View {
     }
     
     func symbolImageViewWrapper() -> Image {
-        if case .changeBuilding(_) = step {
+        if case .changeBuilding(_, _, _, _) = step {
             return Image(self.icon)
                 .symbolRenderingMode(.hierarchical)
         } else {
@@ -42,16 +44,24 @@ struct RouteStepCard: View {
         }
     }
     
-    init(_ step: RouteStep) { self.step = step }
+    func hasInstructions() -> Bool {
+        switch step {
+            case .startAtFloor:
+                return false
+            case .changeFloor(_, let boolVal, _, _),
+                 .changeBuilding(_, let boolVal, _, _):
+                return boolVal
+        }
+    }
     
-    var body: some View {
+    @ViewBuilder private func mainContent() -> some View {
         HStack {
             Text(try! AttributedString(markdown: self.text))
                 .font(.title3)
                 .padding([.leading, .vertical])
             Spacer()
         }.background {
-            FrostedGlassView(effect: .systemMaterial, blurRadius: 4)
+            FrostedGlassView(effect: .systemThickMaterial, blurRadius: 8)
                 .overlay(alignment:.trailing) {
                     symbolImageViewWrapper()
                         .resizable()
@@ -62,7 +72,7 @@ struct RouteStepCard: View {
                             LinearGradient(
                                 colors: [
                                     .black,
-                                    .black.opacity(0.5)
+                                    .black.opacity(0.4)
                                 ],
                                 startPoint: .bottom,
                                 endPoint: .top).padding(-3)
@@ -77,14 +87,58 @@ struct RouteStepCard: View {
                         .rotationEffect(.degrees(-15))
                         .offset(x: -15)
                 }
-        }.compositingGroup()
+        }
+        .compositingGroup()
         .clipShape(RoundedRectangle(cornerRadius: 8))
+    }
+    
+    var body: some View {
+        VStack {
+            mainContent()
+            
+            if hasInstructions() {
+                HStack {
+                    Text("Tap for instructions")
+                    Image(systemName: "chevron.forward")
+                        .font(.caption)
+                    Spacer()
+                }
+                .foregroundStyle(.secondary)
+                .padding(.horizontal)
+                .padding(.bottom, 8)
+                .compositingGroup()
+            }
+            
+        }
+        .background {
+            // Couldn't find a more graceful way of doing this- prevents
+            // a "double stacked" background when no instructions available
+            if hasInstructions() {
+                FrostedGlassView(effect: .systemThinMaterial, blurRadius: 4)
+                    .background(.tertiary)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+            }
+        }
     }
 }
 
 #Preview {
-    RouteStepCard(.changeBuilding(method: .tunnel)).shadow(radius: 4, y:2)
-        .padding(.horizontal).padding(.horizontal)
-            RouteStepCard(.changeFloor(to: "2")).shadow(radius: 4, y: 2).padding(.horizontal).padding(.horizontal)
-                RouteStepCard(.startAtFloor(to: "1")).shadow(radius: 4, y: 2).padding(.horizontal).padding(.horizontal)
+    NavigationStack {
+        VStack(spacing: 32) {
+            RouteStepCard(.changeBuilding(method: .tunnel, hasInstructions: true, startID:"foo", endID:"bar"))
+                .shadow(color: .black.opacity(0.2), radius: 4, y:2)
+                .padding(.horizontal)
+                .padding(.horizontal)
+            
+            RouteStepCard(.changeFloor(to: "2", hasInstructions: false, startID:"foo", endID:"bar"))
+                .shadow(radius: 4, y: 2)
+                .padding(.horizontal)
+                .padding(.horizontal)
+            
+            RouteStepCard(.startAtFloor(to: "1"))
+                .shadow(radius: 4, y: 2)
+                .padding(.horizontal)
+                .padding(.horizontal)
+        }
+    }
 }

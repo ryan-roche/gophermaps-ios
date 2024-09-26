@@ -41,6 +41,11 @@ struct MockAPIClient: APIProtocol {
                         "Test Building 1": "dummy1.png",
                         "Test Building 2": "dummy2.png",
                         "Test Building 3": "dummy1.png"
+                    ]),
+                    instructionsAvailable: .init(additionalProperties: [
+                        "tb1-tb2": false,
+                        "tb2-tb2a": false,
+                        "tb2a-tb3": false
                     ])
                 ))
             )

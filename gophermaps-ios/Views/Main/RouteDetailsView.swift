@@ -34,8 +34,10 @@ enum RouteStep: Hashable, Identifiable {
     }
 
     case startAtFloor(to: String)
-    case changeFloor(to: String)
-    case changeBuilding(method: BuildingLink)
+    case changeFloor(to: String, hasInstructions: Bool,
+                     startID: String, endID: String)
+    case changeBuilding(method: BuildingLink, hasInstructions: Bool,
+                        startID: String, endID: String)
 }
 
 /// Represents a type of connection between two buildings
@@ -136,6 +138,7 @@ struct RouteDetailsView: View {
                                 .shadow(color:.black.opacity(0.2), radius:4, y:2)
                         }
                         
+                        // MARK: Route Step Cards
                         ForEach(stepGroups, id: \.name) { stepGroup in
                             Group {
                                 // ImageCard for building
@@ -165,7 +168,8 @@ struct RouteDetailsView: View {
 
                                 // RouteStepCards for route steps
                                 ForEach(stepGroup.steps) { step in
-                                    RouteStepCard(step).padding(.horizontal)
+                                    RouteStepCard(step)
+                                        .padding(.horizontal)
                                         .shadow(radius: 4, y: 2)
                                 }
                             }
@@ -200,12 +204,16 @@ struct RouteDetailsView: View {
 
         switch response {
         case let .ok(okResponse):
+                
             // Get route Nodes & building thumbnail names from API
             var routeNodes = try okResponse.body.json.pathNodes
             let thumbnailDict = try okResponse.body.json.buildingThumbnails
                 .additionalProperties
+            let instructionsAvailable = try okResponse.body.json.instructionsAvailable.additionalProperties
 
+                
             // Preprocess nodes by "trimming" nodes at the beginning and end so that there's only one node with the start/end building
+                
             // Trim beginning nodes
             let firstBuilding: String = routeNodes[routeNodes.startIndex]
                 .buildingName
@@ -215,6 +223,7 @@ struct RouteDetailsView: View {
             {
                 routeNodes.remove(at: routeNodes.startIndex)
             }
+                
             // Trim end nodes
             let endBuilding: String = routeNodes[routeNodes.endIndex - 1]
                 .buildingName
@@ -225,7 +234,7 @@ struct RouteDetailsView: View {
                 routeNodes.remove(at: routeNodes.endIndex - 1)
             }
 
-            routeStepHelper(routeNodes, thumbnailDict)
+                routeStepHelper(routeNodes, thumbnailDict, instructionsAvailable)
             routeLoadStatus = .done
 
         case .unprocessableContent(_):
@@ -241,7 +250,8 @@ struct RouteDetailsView: View {
     /// Helper for getRoute - processes routeNodes into routeSteps and building groups
     func routeStepHelper(
         _ nodes: [Components.Schemas.NavigationNodeModel],
-        _ thumbnailDict: [String: String]
+        _ thumbnailDict: [String: String],
+        _ instructionsBoolDict: [String: Bool]
     ) {
 
         for index in nodes.indices {
@@ -259,15 +269,25 @@ struct RouteDetailsView: View {
 
             // Final Node: Create a RouteBuildlingGroup for the final buidling and a changeBuilding to the previous group
             else if index == nodes.endIndex - 1 {
+                let currentNode = nodes[index]
+                let previousNode = nodes[index - 1]
+                
                 stepGroups.append(
                     RouteBuildingGroup(
-                        name: nodes[index].buildingName,
+                        name: currentNode.buildingName,
                         thumbnail: thumbnailDict[nodes[index].buildingName]!,
                         position: .end,
                         steps: []
                     ))
                 // TODO: add edge type logic
-                stepGroups[stepGroups.endIndex - 2].steps.append(.changeBuilding(method: .tunnel))
+                stepGroups[stepGroups.endIndex - 2]
+                    .steps.append(
+                        .changeBuilding(
+                            method: .tunnel,
+                            hasInstructions: instructionsBoolDict["\(previousNode.navID)-\(currentNode.navID)"] ?? false,
+                            startID: previousNode.navID,
+                            endID: currentNode.navID)
+                    )
             }
 
             // Middle Nodes: Add a changeFloor step to the current group
@@ -287,15 +307,27 @@ struct RouteDetailsView: View {
                         ))
                     // Add a changeBuilding step to the previous group
                     // TODO: Add edge type logic
-                    stepGroups[stepGroups.endIndex - 2].steps.append(
-                        .changeBuilding(method: .tunnel))
+                    stepGroups[stepGroups.endIndex - 2]
+                        .steps.append(
+                            .changeBuilding(
+                                method: .tunnel,
+                                hasInstructions: instructionsBoolDict["\(previousNode.navID)-\(currentNode.navID)"] ?? false,
+                                startID: previousNode.navID,
+                                endID: currentNode.navID)
+                        )
                 }
 
                 // If the node's building IS the same as the preceeding node's, add a changeFloor step to the current group
                 else {
                     // Add a changeFloor step to the tailing group
-                    stepGroups[stepGroups.endIndex - 1].steps.append(
-                        .changeFloor(to: currentNode.floor))
+                    stepGroups[stepGroups.endIndex - 1]
+                        .steps.append(
+                            .changeFloor(
+                                to: currentNode.floor,
+                                hasInstructions: instructionsBoolDict["\(previousNode.navID)-\(currentNode.navID)"] ?? false,
+                                startID: previousNode.navID,
+                                endID: currentNode.navID)
+                        )
                 }
             }
         }
