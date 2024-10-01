@@ -7,35 +7,75 @@
 
 import SwiftUI
 
+struct SettingsLink<Destination: View, IconBackground: ShapeStyle>: View {
+    
+    let label: String
+    let icon: String
+    let iconBackground: IconBackground
+    let destination: Destination
+    
+    init(_ label: String, icon: String, iconBackground: IconBackground, @ViewBuilder destination: () -> Destination) {
+        self.label = label
+        self.icon = icon
+        self.iconBackground = iconBackground
+        self.destination = destination()
+    }
+    
+    var body: some View {
+        
+        NavigationLink {
+            destination
+                .navigationTitle(label)
+        } label: {
+            ZStack {
+                Image(systemName: "app.fill")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 30)
+                    .foregroundStyle(iconBackground)
+                Image(systemName: icon)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 20)
+                    .foregroundStyle(.white)
+            }.padding(.leading, -6)
+            
+            Text(label)
+            
+        }
+        
+    }
+}
+
 struct SettingsView: View {
     @Binding var showing: Bool
     
     var body: some View {
         NavigationStack {
             VStack {
-                Spacer()
-                Spacer()
-                
-                Image(systemName:"gearshape")
-                    .resizable()
-                    .fontWeight(.ultraLight)
-                    .scaledToFit()
-                    .foregroundStyle(.tertiary)
-                    .frame(height: 140)
-                Text("You'll find the app's settings here.\nWell, you *would* find them if there were any...\n\nJust remember this place for later.")
-                    .multilineTextAlignment(.center)
-                    .padding(.top, 20)
-                    .padding(.horizontal, 60)
-                    .foregroundStyle(.secondary)
-                
-                Spacer()
-                Spacer()
-                Spacer()
-                
-                Divider().padding(.horizontal)
-                // MARK: App details
-                AboutAppView()
-                
+                List {
+                    
+                    // MARK: Appearance
+                    // Appearance settings go here
+                    
+                    // MARK: System
+                    Section(header: Text("System")) {
+                        SettingsLink("Data Management", icon: "externaldrive.fill", iconBackground: .secondary) {
+                            DataSettingsView()
+                        }
+                    }
+                    
+                    // MARK: About
+                    Section(header: Text("About")) {
+                        SettingsLink("Version Info", icon:"info.circle", iconBackground: .cyan) {
+                            VersionDetails()
+                        }
+                    }
+                    
+                }.listStyle(.insetGrouped)
+            }
+            .overlay(alignment: .bottom) {
+                ProfileCards()
             }
             .navigationTitle("Settings")
             .toolbar {
@@ -52,4 +92,5 @@ struct SettingsView: View {
 #Preview {
     @Previewable @State var showing: Bool = true
     SettingsView(showing: $showing)
+        .modelContainer(previewContainer)
 }

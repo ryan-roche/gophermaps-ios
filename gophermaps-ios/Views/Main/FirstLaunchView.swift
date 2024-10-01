@@ -88,10 +88,6 @@ struct AcknowledgementsSubview: View {
             title: "UI is not final",
             content: "The way the app looks, navigates, and functions is subject to change."),
         .init(
-            icon: "building.columns", iconColor: Color(#colorLiteral(red: 0.9411764741, green: 0.4980392158, blue: 0.3529411852, alpha: 1)),
-            title: "Not all buildings are here yet",
-            content: "We're working as fast as we can to add all buildings on campus to the app."),
-        .init(
             icon: "document.badge.clock", iconColor: Color(#colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)),
             title: "Detailed instructions are coming soon",
             content: "Starting with the trickiest routes, we're working to write more detailed instructions for navigating between each building"

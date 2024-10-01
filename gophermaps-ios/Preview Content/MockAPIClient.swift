@@ -8,6 +8,12 @@
 import Foundation
 
 struct MockAPIClient: APIProtocol {
+    func apiVersion(_ input: Operations.apiVersion.Input) async throws -> Operations.apiVersion.Output {
+        return .ok(
+            Operations.apiVersion.Output.Ok(body: .json("mock"))
+        )
+    }
+    
     
     func getRoute(_ input: Operations.getRoute.Input) async throws -> Operations.getRoute.Output {
         try await Task.sleep(for: .seconds(1))
@@ -110,6 +116,5 @@ struct MockAPIClient: APIProtocol {
                 ]))
         )
     }
-    
     
 }

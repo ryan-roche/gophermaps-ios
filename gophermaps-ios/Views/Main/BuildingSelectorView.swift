@@ -45,7 +45,7 @@ struct BuildingSelectorView: View {
                         .foregroundStyle(.secondary)
                 } else {
                     List {
-                        Text("What building are starting from?")
+                        Text("What building are you starting from?")
                         ForEach(filteredBuildings.sorted(by:{$0.buildingName < $1.buildingName}), id: \.self) { building in
                             
                             // Workaround to hide list disclosure chevron

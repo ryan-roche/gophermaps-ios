@@ -4,7 +4,7 @@
 //
 //  Created by Ryan Roche on 8/10/24.
 //
-// TODO: Add TipKit tip for conditional Saved Routes button
+// TODO: Add TipKit tip for Saved Routes button
 
 import SwiftUI
 

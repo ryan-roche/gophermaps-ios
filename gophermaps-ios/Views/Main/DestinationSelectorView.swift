@@ -44,6 +44,7 @@ struct DestinationSelectorView: View {
                     ContentUnavailableView("No destinations found", systemImage:"questionmark.circle.dashed")
                 } else {
                     List {
+                        Text("Where to?")
                         ForEach(filteredDestinations.sorted(by:{$0.buildingName < $1.buildingName}), id: \.self) { destination in
                             
                             // Workaround to hide list disclosure chevron
