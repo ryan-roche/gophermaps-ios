@@ -7,6 +7,6 @@
 
 import Foundation
 
-@Observable class InstructionManager {
-    
+actor InstructionsManager {
+    static let shared = InstructionsManager()   //
 }

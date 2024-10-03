@@ -7,6 +7,7 @@
 // TODO: Add TipKit tip for Saved Routes button
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
     @State private var showingSavedRoutes = false
@@ -15,6 +16,10 @@ struct ContentView: View {
     
     @State private var isViewingSavedRoute = false
     @State private var savedRouteSelection: SavedRoute? = nil
+    
+    @Query(sort:
+            [SortDescriptor(\SavedRoute.start.buildingName), SortDescriptor(\SavedRoute.end.buildingName)]
+    ) var savedRoutes: [SavedRoute]
     
     @AppStorage("hasDoneOnboarding") var hasDoneOnboarding: Bool = false
     
@@ -34,7 +39,7 @@ struct ContentView: View {
                         Button {
                             showingSavedRoutes.toggle()
                         } label: {
-                            Label("Saved", systemImage: "bookmark")
+                            Label("Saved", systemImage: savedRoutes.isEmpty ? "bookmark" : "bookmark.fill")
                         }
                         .buttonBorderShape(.circle)
                         .buttonStyle(.borderedProminent)
@@ -60,7 +65,7 @@ struct ContentView: View {
                         SavedRoutesView(
                             showing: $showingSavedRoutes,
                             presentation: $isViewingSavedRoute,
-                            savedRouteSelection: $savedRouteSelection)
+                            savedRouteSelection: $savedRouteSelection, routes: savedRoutes)
                             .navigationTitle("Saved Routes")
                     }
                 }

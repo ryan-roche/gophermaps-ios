@@ -72,6 +72,15 @@ struct SettingsView: View {
                         }
                     }
                     
+                    // MARK: Developer Settings
+                    Section() {
+                        SettingsLink("Debug Settings",
+                                     icon:"hammer.fill",
+                                     iconBackground:.tertiary) {
+                            DeveloperSettings()
+                        }
+                    }
+                    
                 }.listStyle(.insetGrouped)
             }
             .overlay(alignment: .bottom) {

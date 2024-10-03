@@ -10,6 +10,7 @@ import SwiftUI
 struct NetworkOfflineMessage: View {
     var body: some View {
         ContentUnavailableView("You're Offline", systemImage: "wifi.slash", description: Text("Try again once you're back online"))
+            .symbolEffect(.pulse)
     }
 }
 

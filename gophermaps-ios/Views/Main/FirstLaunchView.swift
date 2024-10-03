@@ -10,76 +10,6 @@ import SwiftUI
 import Kingfisher
 
 
-struct FirstLaunchView: View {
-    @ScaledMetric var betaBadgeXOffset: CGFloat = 6
-    @ScaledMetric var betaBadgeYOffset: CGFloat = 10
-    
-    @State private var tabSelection = 0
-    
-    @Binding var showing: Bool
-    
-    private let tabHeaders: [String] = [
-        "Before you start, please note the following:",
-        "Now, the legal stuff:",
-        "One last thing..."
-    ]
-    
-    var body: some View {
-        
-        VStack {
-            // MARK: Welcome message
-            VStack(spacing:0) {
-                Text("Welcome to")
-                Text("GopherMaps")
-                    .fontWeight(.bold)
-                    .padding(.trailing, betaBadgeXOffset)
-                
-                Text(tabHeaders[tabSelection])
-                    .font(.subheadline)
-                    .padding(.top, 8)
-            }
-            .font(.largeTitle)
-            .padding(.top)
-            
-            // MARK: Content "Pages"
-                TabView(selection: $tabSelection) {
-                    AcknowledgementsSubview()
-                        .tabItem{}.tag(0)
-                    StudentGroupDisclaimerSubview()
-                        .tabItem{}.tag(1)
-                    WelcomeMessageSubview()
-                        .tabItem{}.tag(2)
-                }
-                .tabViewStyle(.page(indexDisplayMode: .always))
-                .indexViewStyle(.page(backgroundDisplayMode: .always))
-            
-            // MARK: Button
-            Button {
-                if tabSelection == 2 {
-                    showing = false
-                } else {
-                    withAnimation(.snappy) {
-                        tabSelection += 1
-                    }
-                }
-            } label: {
-                ZStack {
-                    Color(.accent)
-                    Text(tabSelection == 2 ? "Done" : "Next")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .padding()
-                }
-                .frame(width: nil)
-                .fixedSize(horizontal: false, vertical: true)
-                .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
-            }
-            .buttonStyle(.plain)
-            .padding(.horizontal, 10)
-        }.padding(.bottom, 40)
-    }
-}
-
 struct AcknowledgementsSubview: View {
     
     fileprivate let acknowledgements: [onboardingViewEntry] = [
@@ -267,6 +197,76 @@ private struct onboardingViewEntry {
     let iconColor: Color
     let title: String
     let content: String
+}
+
+struct FirstLaunchView: View {
+    @ScaledMetric var betaBadgeXOffset: CGFloat = 6
+    @ScaledMetric var betaBadgeYOffset: CGFloat = 10
+    
+    @State private var tabSelection = 0
+    
+    @Binding var showing: Bool
+    
+    private let tabHeaders: [String] = [
+        "Before you start, please note the following:",
+        "Now, the legal stuff:",
+        "One last thing..."
+    ]
+    
+    var body: some View {
+        
+        VStack {
+            // MARK: Welcome message
+            VStack(spacing:0) {
+                Text("Welcome to")
+                Text("GopherMaps")
+                    .fontWeight(.bold)
+                    .padding(.trailing, betaBadgeXOffset)
+                
+                Text(tabHeaders[tabSelection])
+                    .font(.subheadline)
+                    .padding(.top, 8)
+            }
+            .font(.largeTitle)
+            .padding(.top)
+            
+            // MARK: Content "Pages"
+                TabView(selection: $tabSelection) {
+                    AcknowledgementsSubview()
+                        .tabItem{}.tag(0)
+                    StudentGroupDisclaimerSubview()
+                        .tabItem{}.tag(1)
+                    WelcomeMessageSubview()
+                        .tabItem{}.tag(2)
+                }
+                .tabViewStyle(.page(indexDisplayMode: .always))
+                .indexViewStyle(.page(backgroundDisplayMode: .always))
+            
+            // MARK: Button
+            Button {
+                if tabSelection == 2 {
+                    showing = false
+                } else {
+                    withAnimation(.snappy) {
+                        tabSelection += 1
+                    }
+                }
+            } label: {
+                ZStack {
+                    Color(.accent)
+                    Text(tabSelection == 2 ? "Done" : "Next")
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .padding()
+                }
+                .frame(width: nil)
+                .fixedSize(horizontal: false, vertical: true)
+                .clipShape(RoundedRectangle(cornerRadius: 15, style: .continuous))
+            }
+            .buttonStyle(.plain)
+            .padding(.horizontal, 10)
+        }.padding(.bottom, 40)
+    }
 }
 
 #Preview {

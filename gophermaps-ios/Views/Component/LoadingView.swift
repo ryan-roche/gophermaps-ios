@@ -8,11 +8,31 @@
 import SwiftUI
 
 struct LoadingView: View {
+    let symbolName: String
+    let label: String
+    
+    init(symbolName: String, label: String) {
+        self.symbolName = symbolName
+        self.label = label
+    }
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack {
+            Image(systemName:symbolName)
+                .resizable()
+                .scaledToFit()
+                .foregroundStyle(.tertiary)
+                .frame(width:100, height:100)
+            HStack {
+                ProgressView()
+                Text(label).foregroundStyle(.secondary)
+            }
+            .padding()
+        }
     }
 }
 
 #Preview {
-    LoadingView()
+    LoadingView(symbolName: "globe", label: "Loading...")
+        .symbolEffect(.pulse, isActive: true)
 }

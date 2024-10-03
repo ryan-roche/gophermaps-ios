@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		944A97F12C6BF2BD004D981B /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 944A97F02C6BF2BD004D981B /* Kingfisher */; };
+		94639D902CADCCB000B7A8E9 /* MarkdownUI in Frameworks */ = {isa = PBXBuildFile; productRef = 94639D8F2CADCCB000B7A8E9 /* MarkdownUI */; };
 		94FBB5702C695372002F2758 /* OpenAPIRuntime in Frameworks */ = {isa = PBXBuildFile; productRef = 94FBB56F2C695372002F2758 /* OpenAPIRuntime */; };
 		94FBB5732C69537A002F2758 /* OpenAPIURLSession in Frameworks */ = {isa = PBXBuildFile; productRef = 94FBB5722C69537A002F2758 /* OpenAPIURLSession */; };
 /* End PBXBuildFile section */
@@ -49,6 +50,7 @@
 				944A97F12C6BF2BD004D981B /* Kingfisher in Frameworks */,
 				94FBB5702C695372002F2758 /* OpenAPIRuntime in Frameworks */,
 				94FBB5732C69537A002F2758 /* OpenAPIURLSession in Frameworks */,
+				94639D902CADCCB000B7A8E9 /* MarkdownUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -121,6 +123,7 @@
 				94FBB56F2C695372002F2758 /* OpenAPIRuntime */,
 				94FBB5722C69537A002F2758 /* OpenAPIURLSession */,
 				944A97F02C6BF2BD004D981B /* Kingfisher */,
+				94639D8F2CADCCB000B7A8E9 /* MarkdownUI */,
 			);
 			productName = "gophermaps-ios";
 			productReference = 942CD6FF2C67FBB10007554F /* gophermaps-ios.app */;
@@ -209,6 +212,7 @@
 				94FBB56E2C695372002F2758 /* XCRemoteSwiftPackageReference "swift-openapi-runtime" */,
 				94FBB5712C69537A002F2758 /* XCRemoteSwiftPackageReference "swift-openapi-urlsession" */,
 				944A97EA2C6BF0C6004D981B /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				94639D8E2CADCCB000B7A8E9 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */,
 			);
 			productRefGroup = 942CD7002C67FBB10007554F /* Products */;
 			projectDirPath = "";
@@ -610,6 +614,14 @@
 				minimumVersion = 7.0.0;
 			};
 		};
+		94639D8E2CADCCB000B7A8E9 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/gonzalezreal/swift-markdown-ui";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.4.0;
+			};
+		};
 		94FBB56B2C695366002F2758 /* XCRemoteSwiftPackageReference "swift-openapi-generator" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/apple/swift-openapi-generator.git";
@@ -641,6 +653,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 944A97EA2C6BF0C6004D981B /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		94639D8F2CADCCB000B7A8E9 /* MarkdownUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 94639D8E2CADCCB000B7A8E9 /* XCRemoteSwiftPackageReference "swift-markdown-ui" */;
+			productName = MarkdownUI;
 		};
 		94FBB56F2C695372002F2758 /* OpenAPIRuntime */ = {
 			isa = XCSwiftPackageProductDependency;
