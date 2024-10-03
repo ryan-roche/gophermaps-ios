@@ -9,49 +9,42 @@
 import SwiftUI
 
 struct BuildingSelectorView: View {
-    @State var buildings: [Components.Schemas.BuildingEntryModel] = []
-    @State var buildingLoadStatus: apiCallState = .idle
     
-    @State var searchText: String = ""
+    @State private var vm: BuildingViewModel
     
-    let area: Components.Schemas.AreaModel
-    
-    var filteredBuildings: [Components.Schemas.BuildingEntryModel] {
-        if searchText.isEmpty {
-            return buildings
-        } else {
-            return buildings.filter { $0.buildingName.localizedCaseInsensitiveContains(searchText) }
-        }
+    init(_ area: Components.Schemas.AreaModel) {
+        self.vm = .init(area)
     }
     
     var body: some View {
-        switch buildingLoadStatus {
+        switch vm.status {
             case .idle:
                 Color.clear.onAppear {
-                    buildingLoadStatus = .loading
+                    vm.status = .loading
                     Task {
                         do {
-                            try await populateBuildings()
+                            try await vm.populateBuildings()
                         } catch {
-                            buildingLoadStatus = .offline
+                            vm.status = .offline
                         }
                     }
                 }
             case .loading:
-                ProgressView("Loading Buildings...")
+                LoadingView(symbolName: "building.2", label: "Getting Buildings...")
+                    .symbolEffect(.pulse, isActive: true)
             case .done:
-                if buildings.isEmpty {
+                if vm.buildings.isEmpty {
                     ContentUnavailableView("No buildings found", systemImage:"questionmark.circle.dashed")
                         .foregroundStyle(.secondary)
                 } else {
                     List {
                         Text("What building are you starting from?")
-                        ForEach(filteredBuildings.sorted(by:{$0.buildingName < $1.buildingName}), id: \.self) { building in
+                        ForEach(vm.filteredBuildings.sorted(by:{$0.buildingName < $1.buildingName}), id: \.self) { building in
                             
                             // Workaround to hide list disclosure chevron
                             ZStack {
                                 NavigationLink {
-                                    DestinationSelectorView(building: building).navigationTitle("Destination")
+                                    DestinationSelectorView(building).navigationTitle("Destination")
                                 } label: {
                                     EmptyView()
                                 }
@@ -63,7 +56,7 @@ struct BuildingSelectorView: View {
                         }
                     }
                     .listStyle(.plain)
-                    .searchable(text: $searchText, prompt:"Building Name")
+                    .searchable(text: $vm.searchText, prompt:"Building Name")
                 }
             case .offline:
                 NetworkOfflineMessage()
@@ -72,7 +65,24 @@ struct BuildingSelectorView: View {
                     .foregroundStyle(.secondary)
         }
     }
+}
+
+@Observable class BuildingViewModel {
+    var buildings: [Components.Schemas.BuildingEntryModel] = []
+    var status: apiCallState = .idle
+    var searchText: String = ""
     
+    let area: Components.Schemas.AreaModel
+    
+    var filteredBuildings: [Components.Schemas.BuildingEntryModel] {
+        if searchText.isEmpty {
+            return buildings
+        } else {
+            return buildings.filter { $0.buildingName.localizedCaseInsensitiveContains(searchText) }
+        }
+    }
+    
+    @MainActor
     func populateBuildings() async throws {
         let response = try await apiClient.getBuildingsForArea(
             Operations.getBuildingsForArea.Input(path: .init(area: area.name))
@@ -81,20 +91,24 @@ struct BuildingSelectorView: View {
         switch response {
         case let .ok(okResponse):
             self.buildings = try okResponse.body.json
-                buildingLoadStatus = .done
+                status = .done
         case .unprocessableContent(_):
             print("getBuildings failed (unprocessableContent)")
-                buildingLoadStatus = .failed
+                status = .failed
         case .undocumented(statusCode: let statusCode, _):
             print("getBuildings failed: \(statusCode)")
-                buildingLoadStatus = .failed
+                status = .failed
         }
+    }
+    
+    init(_ area: Components.Schemas.AreaModel) {
+        self.area = area
     }
 }
 
 #Preview {
     NavigationStack {
-        BuildingSelectorView(area: Components.Schemas.AreaModel(
+        BuildingSelectorView(Components.Schemas.AreaModel(
             name: Components.Schemas.AreaName.East_space_Bank, thumbnail: "dummy1.png")
         ).navigationTitle("Start Building")
     }

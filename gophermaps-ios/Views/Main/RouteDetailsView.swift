@@ -50,6 +50,7 @@ enum BuildingLink: Identifiable {
     case skyway
 }
 
+// MARK: SaveRouteButton View
 struct SaveRouteButton: View {
     @Query var matchingSavedRoutes: [SavedRoute]
     @Environment(\.modelContext) var context
@@ -82,57 +83,57 @@ struct SaveRouteButton: View {
         } label: {
             Image(systemName: !matchingSavedRoutes.isEmpty ? "bookmark.fill" : "bookmark")
         }
+        .contentTransition(.symbolEffect(
+            .replace.offUp,
+            options: .speed(2.5)
+        ))
         .buttonBorderShape(.circle)
         .buttonStyle(.bordered)
     }
 }
 
+// MARK: RouteDetailsView
 struct RouteDetailsView: View {
+    
     @Environment(\.modelContext) var context
-    
-    @State var stepGroups: [RouteBuildingGroup] = []
-    @State var routeLoadStatus: apiCallState = .idle
-
-    let startBuilding: Components.Schemas.BuildingEntryModel
-    let endBuilding: Components.Schemas.BuildingEntryModel
-    
-    let startNode: String
-    let endNode: String
+    @State private var vm: RouteViewModel
 
     init(_ start: Components.Schemas.BuildingEntryModel,
          _ end: Components.Schemas.BuildingEntryModel) {
-        self.startBuilding = start
-        self.endBuilding = end
-        self.startNode = start.keyID
-        self.endNode = end.keyID
+        self.vm = .init(startBuilding: start, endBuilding: end, startNode: start.keyID, endNode: end.keyID)
     }
-
+    
+    // MARK: Body
     var body: some View {
-        switch routeLoadStatus {
+        switch vm.status {
             case .idle:
                 Color.clear.onAppear {
                     Task {
                         do {
-                            try await getRoute()
+                            try await vm.getRoute()
                         } catch {
-                            routeLoadStatus = .offline
+                            vm.status = .offline
                         }
                     }
-                    routeLoadStatus = .loading
+                    vm.status = .loading
                 }
             case .loading:
-                ProgressView("Calculating Route...")
+                LoadingView(symbolName:"square.3.layers.3d", label: "Calculating Route")
+                    .symbolEffect(
+                        .variableColor.iterative,
+                        options: .speed(1.5),
+                        isActive: true)
             case .done:
                 ScrollView {
                     // MARK: Route Info Cards
                     VStack(spacing: 20) {
                         HStack {
-                            Text(stepGroups[0].name)
+                            Text(vm.stepGroups[0].name)
                                 .fontWeight(.medium)
                                 .lineLimit(1)
                                 .minimumScaleFactor(0.5)
                             Image(systemName:"arrow.forward")
-                            Text(stepGroups[stepGroups.endIndex-1].name)
+                            Text(vm.stepGroups[vm.stepGroups.endIndex-1].name)
                                 .fontWeight(.medium)
                                 .lineLimit(1)
                                 .minimumScaleFactor(0.5)
@@ -145,7 +146,7 @@ struct RouteDetailsView: View {
                         }
                         
                         // MARK: Route Step Cards
-                        ForEach(stepGroups, id: \.name) { stepGroup in
+                        ForEach(vm.stepGroups, id: \.name) { stepGroup in
                             Group {
                                 // ImageCard for building
                                 if stepGroup.position != .middle {
@@ -173,10 +174,33 @@ struct RouteDetailsView: View {
                                 }
 
                                 // RouteStepCards for route steps
+                                // NavigationLink if detailed instructions are available
                                 ForEach(stepGroup.steps) { step in
-                                    RouteStepCard(step)
-                                        .padding(.horizontal)
-                                        .shadow(radius: 4, y: 2)
+                                    
+                                    switch step {
+                                        case .changeBuilding(_, let hasInstructions, _, _):
+                                            if hasInstructions {
+                                                NavigationLink {
+                                                    StepInstructionsView(step)
+                                                        .navigationTitle("Step Instructions")
+                                                } label: {
+                                                    RouteStepCard(step)
+                                                        .padding(.horizontal)
+                                                        .shadow(radius: 4, y: 2)
+                                                }
+                                                .buttonStyle(.plain)
+                                            } else {
+                                                RouteStepCard(step)
+                                                    .padding(.horizontal)
+                                                    .shadow(radius: 4, y: 2)
+                                            }
+                                            
+                                        default:
+                                            RouteStepCard(step)
+                                                .padding(.horizontal)
+                                                .shadow(radius: 4, y: 2)
+                                    }
+                                    
                                 }
                             }
                             
@@ -185,23 +209,47 @@ struct RouteDetailsView: View {
                                     .foregroundStyle(.secondary)
                                     .fontWeight(.bold)
                             }
+                            
                         }
                     }.padding()
                 }.toolbar {
                     // MARK: Save Route Button
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        SaveRouteButton(startBuilding, endBuilding)
+                        SaveRouteButton(vm.startBuilding, vm.endBuilding)
                     }
                 }
             case .offline:
-                ContentUnavailableView("You're Offline", systemImage:"wifi.slash")
+                NetworkOfflineMessage()
             case .failed:
                 ContentUnavailableView("Load failed", systemImage: "exclamationmark.magnifyingglass")
                     .foregroundStyle(.secondary)
         }
     }
+}
 
+@Observable class RouteViewModel {
+    
+    var stepGroups: [RouteBuildingGroup] = []
+    var status: apiCallState = .idle
+
+    let startBuilding: Components.Schemas.BuildingEntryModel
+    let endBuilding: Components.Schemas.BuildingEntryModel
+    
+    let startNode: String
+    let endNode: String
+    
+    init(startBuilding: Components.Schemas.BuildingEntryModel,
+         endBuilding: Components.Schemas.BuildingEntryModel,
+         startNode: String, endNode: String) {
+        self.startBuilding = startBuilding
+        self.endBuilding = endBuilding
+        self.startNode = startNode
+        self.endNode = endNode
+    }
+    
+    // MARK: getRoute()
     /// Used to perform and process the API call to get a route between buildings
+    @MainActor
     func getRoute() async throws {
         let response = try await apiClient.getRoute(
             Operations.getRoute.Input(
@@ -240,26 +288,26 @@ struct RouteDetailsView: View {
                 routeNodes.remove(at: routeNodes.endIndex - 1)
             }
 
-                routeStepHelper(routeNodes, thumbnailDict, instructionsAvailable)
-            routeLoadStatus = .done
+            routeStepHelper(routeNodes, thumbnailDict, instructionsAvailable)
+            status = .done
 
         case .unprocessableContent(_):
             print("getRouteSteps failed (unprocessableContent)")
-            routeLoadStatus = .failed
+            status = .failed
 
         case .undocumented(let statusCode, _):
             print("getRouteSteps failed: \(statusCode)")
-            routeLoadStatus = .failed
+            status = .failed
         }
     }
 
+    // MARK: routeStepHelper()
     /// Helper for getRoute - processes routeNodes into routeSteps and building groups
     func routeStepHelper(
         _ nodes: [Components.Schemas.NavigationNodeModel],
         _ thumbnailDict: [String: String],
         _ instructionsBoolDict: [String: Bool]
     ) {
-
         for index in nodes.indices {
             // First Node: Create a RouteBuildingGroup for the first building and give it a startAtFloor RouteStep
             if index == nodes.startIndex {
@@ -285,6 +333,7 @@ struct RouteDetailsView: View {
                         position: .end,
                         steps: []
                     ))
+                
                 // TODO: add edge type logic
                 stepGroups[stepGroups.endIndex - 2]
                     .steps.append(
@@ -340,6 +389,7 @@ struct RouteDetailsView: View {
     }
 }
 
+// MARK: Previews
 #Preview("RouteDetailsView (Unsaved Route)") {
     NavigationStack {
         RouteDetailsView(

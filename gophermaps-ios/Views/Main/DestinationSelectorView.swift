@@ -9,43 +9,36 @@
 import SwiftUI
 
 struct DestinationSelectorView: View {
-    @State var destinations: [Components.Schemas.BuildingEntryModel] = []
-    @State var destinationLoadStatus: apiCallState = .idle
     
-    @State var searchText: String = ""
+    @State private var vm: DestinationViewModel
     
-    let building: Components.Schemas.BuildingEntryModel
-    
-    var filteredDestinations: [Components.Schemas.BuildingEntryModel] {
-        if searchText.isEmpty {
-            return destinations
-        } else {
-            return destinations.filter { $0.buildingName.localizedCaseInsensitiveContains(searchText) }
-        }
+    init(_ building: Components.Schemas.BuildingEntryModel) {
+        self.vm = .init(building: building)
     }
     
     var body: some View {
-        switch destinationLoadStatus {
+        switch vm.status {
             case .idle:
                 Color.clear.onAppear {
                     Task {
                         do {
-                            try await getDestinations()
+                            try await vm.getDestinations()
                         } catch {
-                            destinationLoadStatus = .offline
+                            vm.status = .offline
                         }
                     }
-                    destinationLoadStatus = .loading
+                    vm.status = .loading
                 }
             case .loading:
-                ProgressView("Loading Destinations...")
+                LoadingView(symbolName:"mappin.and.ellipse", label:"Loading destinations...")
+                    .symbolEffect(.pulse, isActive: true)
             case .done:
-                if destinations.isEmpty {
+                if vm.destinations.isEmpty {
                     ContentUnavailableView("No destinations found", systemImage:"questionmark.circle.dashed")
                 } else {
                     List {
                         Text("Where to?")
-                        ForEach(filteredDestinations.sorted(by:{$0.buildingName < $1.buildingName}), id: \.self) { destination in
+                        ForEach(vm.filteredDestinations.sorted(by:{$0.buildingName < $1.buildingName}), id: \.self) { destination in
                             
                             // Workaround to hide list disclosure chevron
                             ZStack {
@@ -53,7 +46,7 @@ struct DestinationSelectorView: View {
                                     .shadow(radius:4, y:2)
                                     .frame(height: 200)
                                 NavigationLink {
-                                    RouteDetailsView(building, destination)
+                                    RouteDetailsView(vm.building, destination)
                                         .navigationTitle("Your Route")
                                 } label: {
                                     EmptyView()
@@ -63,7 +56,7 @@ struct DestinationSelectorView: View {
                         }
                     }
                     .listStyle(.plain)
-                    .searchable(text: $searchText, prompt:"Building Name")
+                    .searchable(text: $vm.searchText, prompt:"Building Name")
                 }
             case .offline:
                 NetworkOfflineMessage()
@@ -72,7 +65,28 @@ struct DestinationSelectorView: View {
                     .foregroundStyle(.secondary)
         }
     }
+}
+
+@Observable class DestinationViewModel {
+    let building: Components.Schemas.BuildingEntryModel
     
+    var destinations: [Components.Schemas.BuildingEntryModel] = []
+    var status: apiCallState = .idle
+    var searchText: String = ""
+    
+    init(building: Components.Schemas.BuildingEntryModel) {
+        self.building = building
+    }
+    
+    var filteredDestinations: [Components.Schemas.BuildingEntryModel] {
+        if searchText.isEmpty {
+            return destinations
+        } else {
+            return destinations.filter { $0.buildingName.localizedCaseInsensitiveContains(searchText) }
+        }
+    }
+    
+    @MainActor
     func getDestinations() async throws {
         let response = try await apiClient.getDestinationsForBuilding(
             Operations.getDestinationsForBuilding.Input(path: .init(building: building.buildingName))
@@ -82,20 +96,20 @@ struct DestinationSelectorView: View {
         case let .ok(okResponse):
             self.destinations = try okResponse.body.json
                 self.destinations.removeAll { $0.buildingName == building.buildingName }
-            destinationLoadStatus = .done
+                status = .done
         case .unprocessableContent(_):
             print("getDestinations failed (unprocessableContent)")
-            destinationLoadStatus = .failed
+                status = .failed
         case .undocumented(statusCode: let statusCode, _):
             print("getDestinations failed: \(statusCode)")
-            destinationLoadStatus = .failed
+                status = .failed
         }
     }
 }
 
 #Preview {
     NavigationStack {
-        DestinationSelectorView(building: Components.Schemas.BuildingEntryModel(
+        DestinationSelectorView( Components.Schemas.BuildingEntryModel(
             buildingName: "Test Building 1",
             thumbnail: "dummy1.png",
             keyID: "tb1")

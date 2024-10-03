@@ -9,32 +9,34 @@
 import SwiftUI
 
 struct AreaSelectorView: View {
-    @State var areas: [Components.Schemas.AreaModel] = []
-    @State var areaLoadStatus: apiCallState = .idle
+    
+    @State private var vm = AreaViewModel()
     
     var body: some View {
-        switch areaLoadStatus {
+        switch vm.status {
             case .idle:
                 Color.clear.onAppear {
-                    areaLoadStatus = .loading
+                    vm.status = .loading
                     Task {
                         do {
-                            try await populateAreas()
+                            try await vm.populateAreas()
                         } catch {
-                            areaLoadStatus = .offline
+                            vm.status = .offline
                         }
                     }
                 }
             case .loading:
-                ProgressView("Getting Areas...")
+                LoadingView(symbolName: "map", label: "Getting Areas...")
+                    .symbolEffect(.pulse, isActive: true)
+                
             case .done:
                 VStack(spacing:16) {
                     Text("Select an area to get started.")
                         .frame(maxWidth:.infinity, alignment: .leading)
-                    ForEach(areas, id: \.self) {area in
+                    ForEach(vm.areas, id: \.self) {area in
                         NavigationLink(
                             destination: {
-                                BuildingSelectorView(area: area)
+                                BuildingSelectorView(area)
                                     .navigationTitle("Start Building")
                             },
                             label: {
@@ -50,18 +52,28 @@ struct AreaSelectorView: View {
                 ContentUnavailableView("Failed to load Areas", systemImage: "exclamationmark.magnifyingglass")
         }
     }
+}
+
+@Observable class AreaViewModel {
+    var status: apiCallState = .idle
+    var areas: [Components.Schemas.AreaModel] = []
     
+    @MainActor
     func populateAreas() async throws {
         let response = try await apiClient.getAreas(Operations.getAreas.Input())
         
         switch response {
             case let .ok(okResponse):
                 self.areas = try okResponse.body.json
-                areaLoadStatus = .done
+                withAnimation(.snappy) {
+                    status = .done
+                }
             
             case .undocumented(statusCode: let statusCode, _):
                 print("getAreas failed: \(statusCode)")
-                areaLoadStatus = .failed
+                withAnimation {
+                    status = .failed
+                }
         }
     }
 }
