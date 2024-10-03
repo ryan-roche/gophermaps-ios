@@ -19,10 +19,25 @@ struct DataSettingsView: View {
     @State var confirmDeleteSavedRoutes: Bool = false
     @State var confirmDeleteInstructions: Bool = false
     
-    @State private var vm = DataSettingsViewModel(context: context)
+    func deleteSavedRoutes() {
+        let fd = FetchDescriptor<SavedRoute>()
+        
+        do {
+            let results = try context.fetch(fd)
+            for object in results {
+                context.delete(object)
+            }
+            
+            try context.save()
+        
+        } catch {
+            print("Failed to delete SavedRoute objects: \(error)")
+        }
+    }
     
-    init() {
-        self.vm
+    func deleteInstructions() {
+        // Get URL to documents directory
+        // Delete all contents of the instructions directory
     }
     
     var body: some View {
@@ -54,35 +69,6 @@ struct DataSettingsView: View {
 #if DEBUG
         Text("\(routes.count) Saved Routes")
 #endif
-    }
-}
-
-@Observable class DataSettingsViewModel {
-    
-    let context: ModelContext
-    
-    init(context: ModelContext) {
-        self.context = context
-    }
-    
-    func deleteSavedRoutes() {
-        let fd = FetchDescriptor<SavedRoute>()
-        
-        do {
-            let results = try context.fetch(fd)
-            for object in results {
-                context.delete(object)
-            }
-            
-            try context.save()
-        
-        } catch {
-            print("Failed to delete SavedRoute objects: \(error)")
-        }
-    }
-    func deleteInstructions() {
-        // Get URL to documents directory
-        // Delete all contents of the instructions directory
     }
 }
 
