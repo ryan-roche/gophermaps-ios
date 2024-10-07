@@ -21,6 +21,7 @@ let apiClient = Client(
 //#endif
 
 let thumbnailBaseURL = "https://raw.githubusercontent.com/ryan-roche/gophermaps-data/main/thumbnails"
+let instructionBaseURL = "https://raw.githubusercontent.com/ryan-roche/gophermaps-data/main/instructions"
 
 enum apiCallState {
     case idle
