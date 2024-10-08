@@ -55,12 +55,54 @@ struct InstructionsMarkdownView: View {
         #endif
     }
     
+    /// Uses a regex to extract the alt text from a Markdown Image entry
+    /// - Parameter markdown: A markdown string of the format `![alt text](imageURL)`
+    /// - Returns: A string containing either the alt text or an error message if it failed to extract
+    private func yankAltText(from markdown: String) -> String {
+        let pattern = #"!\[([^\]]*)\]\([^\)]+\)"#
+        guard let regex = try? NSRegularExpression(pattern: pattern, options: []) else {
+                return "Error Loading Text"
+            }
+        let nsString = markdown as NSString
+        let results = regex.matches(in: markdown, options: [], range: NSRange(location: 0, length: nsString.length))
+
+        // Extract the first match's alt text
+        if let match = results.first, let range = Range(match.range(at: 1), in: markdown) {
+            return String(markdown[range])
+        }
+
+        return "Error Loading Text"
+    }
+    
     var body: some View {
         if let markdownContent = try? String(contentsOf: markdownURL, encoding:.utf8) {
+            // MARK: Markdown Content
             ScrollView {
                 Markdown(markdownContent, imageBaseURL: instructionsDirectoryURL).markdownImageProvider(.asset)
+                    .markdownBlockStyle(\.image) { configuration in
+                        VStack(spacing:0) {
+                            configuration.label
+                                .accessibilityLabel("Step instructions image")
+                            
+                            Text(yankAltText(from: configuration.content.renderMarkdown()))
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background {
+                                    configuration.label
+                                        .overlay {
+                                            FrostedGlassView(effect: .systemMaterial, blurRadius: 16)
+                                                .padding(-2)
+                                        }
+                                }
+                                .clipped()
+                        }
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                        .shadow(color: .black.opacity(0.2), radius: 8, y: 8)
+                    }
+                    .padding()
             }
         } else {
+            // MARK: Load Error Message
             ContentUnavailableView("Failed to load Instructions", systemImage: "square.3.layers.3d")
             .foregroundStyle(.secondary)
         }
