@@ -9,54 +9,18 @@ import SwiftUI
 
 struct StepInstructionsView: View {
     
-    @State private var vm: InstructionsViewModel
+    let instructionsDirName: String
     
     init(_ step: RouteStep) {
-        switch step {
-            case .changeBuilding:
-                self.vm = InstructionsViewModel(step)
-            default:
-                fatalError("Incorrect RouteStep type: \(step)")
+        guard case let RouteStep.changeBuilding(_, true, start, end) = step else {
+            fatalError("Incorrect step type!")
         }
+        
+        instructionsDirName = start + "-" + end
     }
     
     var body: some View {
-        switch vm.status {
-            case .idle:
-                Color.clear.onAppear {
-                    Task {
-                        do {
-                            try await vm.loadInstructions()
-                        } catch {
-                            vm.status = .failed
-                        }
-                    }
-                    vm.status = .loading
-                }
-            case .loading:
-                LoadingView(symbolName:"arrow.down.document", label: "Downloading Instructions...")
-                    .symbolEffect(.pulse, isActive: true)
-            case .done:
-                Text("DUMMY")
-            case .failed:
-                ContentUnavailableView("Failed to download instructions.", image: "arrow.down.app.dashed.trianglebadge.exclamationmark")
-            case .offline:
-                NetworkOfflineMessage()
-        }
-    }
-}
-
-@Observable class InstructionsViewModel {
-    let step: RouteStep
-    var status: apiCallState = .idle
-    
-    init(_ step: RouteStep) {
-        self.step = step
-    }
-    
-    @MainActor
-    func loadInstructions() async throws {
-        return
+        InstructionsMarkdownView(dirName: instructionsDirName)
     }
 }
 

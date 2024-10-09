@@ -4,9 +4,6 @@
 //
 //  Created by Ryan Roche on 8/15/24.
 //
-// TODO: Add TipKit tip for "Save Route" button
-// TODO: Add building name to "follow signs" stepcard
-// TODO: Add detailedStepsView variant for RouteStepCard
 
 import SwiftUI
 import SwiftData
@@ -87,6 +84,82 @@ struct SaveRouteButton: View {
     }
 }
 
+struct RouteContentsView: View {
+    
+    let stepGroups: [RouteBuildingGroup]
+    
+    init(_ groups: [RouteBuildingGroup]) {
+        self.stepGroups = groups
+    }
+    
+    var body: some View {
+        ScrollView {
+            // MARK: Route Info Cards
+            VStack(spacing: 20) {
+                HStack {
+                    Text(stepGroups[0].name)
+                        .fontWeight(.medium)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.5)
+                    Image(systemName:"arrow.forward")
+                    Text(stepGroups[stepGroups.endIndex-1].name)
+                        .fontWeight(.medium)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.5)
+                }
+                .padding()
+                .background {
+                    FrostedGlassView(effect:.systemMaterial)
+                        .clipShape(RoundedRectangle(cornerRadius:8))
+                        .shadow(color:.black.opacity(0.2), radius:4, y:2)
+                }
+                
+                // MARK: Route Step Cards
+                ForEach(stepGroups, id: \.name) { stepGroup in
+                    Group {
+                        // ImageCard for building
+                        if stepGroup.position != .middle {
+                            // Large card for first and last building
+                            ImageCard(
+                                label: stepGroup.name,
+                                imageURL: URL(
+                                    string: thumbnailBaseURL.appending(
+                                        "/buildings/\(stepGroup.thumbnail)")
+                                )!,
+                                layout: .vertical
+                            )
+                            .shadow(radius: 4, y: 2)
+                            .frame(height: 200)
+                        } else {
+                            // Smaller card for intermediate buildings
+                            ImageCard(
+                                label: stepGroup.name,
+                                imageURL: URL(
+                                    string: thumbnailBaseURL.appending(
+                                        "/buildings/\(stepGroup.thumbnail)")
+                                )!,
+                                layout: .horizontal
+                            ).shadow(radius: 4, y: 2)
+                        }
+
+                        // RouteStepCards for route steps
+                        ForEach(stepGroup.steps) { step in
+                            RouteStepCard(step)
+                                .padding(.horizontal)
+                        }
+                    }
+                    
+                    if stepGroup.position != .end {
+                        Image(systemName: "arrow.down")
+                            .foregroundStyle(.secondary)
+                            .fontWeight(.bold)
+                    }
+                }
+            }.padding()
+        }
+    }
+}
+
 struct RouteDetailsView: View {
     @Environment(\.modelContext) var context
     
@@ -123,72 +196,7 @@ struct RouteDetailsView: View {
             case .loading:
                 ProgressView("Calculating Route...")
             case .done:
-                ScrollView {
-                    // MARK: Route Info Cards
-                    VStack(spacing: 20) {
-                        HStack {
-                            Text(stepGroups[0].name)
-                                .fontWeight(.medium)
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.5)
-                            Image(systemName:"arrow.forward")
-                            Text(stepGroups[stepGroups.endIndex-1].name)
-                                .fontWeight(.medium)
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.5)
-                        }
-                        .padding()
-                        .background {
-                            FrostedGlassView(effect:.systemMaterial)
-                                .clipShape(RoundedRectangle(cornerRadius:8))
-                                .shadow(color:.black.opacity(0.2), radius:4, y:2)
-                        }
-                        
-                        // MARK: Route Step Cards
-                        ForEach(stepGroups, id: \.name) { stepGroup in
-                            Group {
-                                // ImageCard for building
-                                if stepGroup.position != .middle {
-                                    // Large card for first and last building
-                                    ImageCard(
-                                        label: stepGroup.name,
-                                        imageURL: URL(
-                                            string: thumbnailBaseURL.appending(
-                                                "/buildings/\(stepGroup.thumbnail)")
-                                        )!,
-                                        layout: .vertical
-                                    )
-                                    .shadow(radius: 4, y: 2)
-                                    .frame(height: 200)
-                                } else {
-                                    // Smaller card for intermediate buildings
-                                    ImageCard(
-                                        label: stepGroup.name,
-                                        imageURL: URL(
-                                            string: thumbnailBaseURL.appending(
-                                                "/buildings/\(stepGroup.thumbnail)")
-                                        )!,
-                                        layout: .horizontal
-                                    ).shadow(radius: 4, y: 2)
-                                }
-
-                                // RouteStepCards for route steps
-                                ForEach(stepGroup.steps) { step in
-                                    RouteStepCard(step)
-                                        .padding(.horizontal)
-                                        .shadow(radius: 4, y: 2)
-                                }
-                            }
-                            
-                            if stepGroup.position != .end {
-                                Image(systemName: "arrow.down")
-                                    .foregroundStyle(.secondary)
-                                    .fontWeight(.bold)
-                            }
-                        }
-                    }.padding()
-                }.toolbar {
-                    // MARK: Save Route Button
+                RouteContentsView(stepGroups).toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         SaveRouteButton(startBuilding, endBuilding)
                     }

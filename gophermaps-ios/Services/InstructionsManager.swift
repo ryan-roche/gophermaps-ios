@@ -7,25 +7,50 @@
 
 import Foundation
 
+enum InstructionDownloadFailureType {
+    case networkOffline
+    case otherError(Error)
+}
+
+enum InstructionFileStatus {
+    case missing
+    case downloaded
+    case downloadFailed(InstructionDownloadFailureType)
+}
+
 actor InstructionsManager {
     static let shared = InstructionsManager()
     
+    var instructionFileStatuses: [String: InstructionFileStatus] = [:]
+    
     private let fileManager = FileManager.default
     private let instructionsDirectory: URL
+    private let instructionsBaseURL: URL = .init(string: "https://raw.githubusercontent.com/ryan-roche/gophermaps-data/main/instructions")!
     private var activeDownloads: [URL: Task<Void, Error>] = [:]
     
     init() {
-        // Destination Directory
+        // Find the app's documents directory
         let documentsDirectory = fileManager.urls(for: .documentDirectory, in: .userDomainMask).first!
         self.instructionsDirectory = documentsDirectory.appendingPathComponent("instructions")
         
-        // Ensure the destination directory exists
+        // Ensure the instructions directory exists
         if !fileManager.fileExists(atPath: instructionsDirectory.path) {
             try! fileManager.createDirectory(at: instructionsDirectory, withIntermediateDirectories: true)
         }
     }
     
-    func downloadFiles(from urls: [URL]) async {
+    
+    func downloadInstructions(from dirs: [String]) async {
+        var urls: [URL] = []    // URLs to instruction directories on CDN
+        
+        for dir in dirs {
+            urls.append(instructionsBaseURL.appendingPathComponent(dir))
+        }
+    }
+    
+    /// Asynchronously downloads files from a list of URLs
+    /// - Parameter urls: URLs to the files to be downloaded
+    private func downloadFiles(from urls: [URL]) async {
         await withTaskGroup(of: Void.self) { group in
             for url in urls {
                 group.addTask {

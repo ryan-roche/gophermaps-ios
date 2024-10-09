@@ -95,6 +95,7 @@ struct RouteStepCard: View {
     var body: some View {
         VStack {
             mainContent()
+                .shadow(color:.black.opacity(hasInstructions() ? 0.15 : 0), radius:2, y: 2)
             
             if hasInstructions() {
                 HStack {
@@ -115,10 +116,12 @@ struct RouteStepCard: View {
             // a "double stacked" background when no instructions available
             if hasInstructions() {
                 FrostedGlassView(effect: .systemThinMaterial, blurRadius: 4)
-                    .background(.tertiary)
+                    .background(.quaternary)
                     .clipShape(RoundedRectangle(cornerRadius: 8))
             }
         }
+        .compositingGroup()
+        .shadow(color:.black.opacity(0.2), radius:4, y: 4)
     }
 }
 
@@ -126,17 +129,18 @@ struct RouteStepCard: View {
     NavigationStack {
         VStack(spacing: 32) {
             RouteStepCard(.changeBuilding(method: .tunnel, hasInstructions: true, startID:"foo", endID:"bar"))
-                .shadow(color: .black.opacity(0.2), radius: 4, y:2)
+                .padding(.horizontal)
+                .padding(.horizontal)
+            
+            RouteStepCard(.changeBuilding(method: .tunnel, hasInstructions: false, startID:"foo", endID:"bar"))
                 .padding(.horizontal)
                 .padding(.horizontal)
             
             RouteStepCard(.changeFloor(to: "2", hasInstructions: false, startID:"foo", endID:"bar"))
-                .shadow(radius: 4, y: 2)
                 .padding(.horizontal)
                 .padding(.horizontal)
             
             RouteStepCard(.startAtFloor(to: "1"))
-                .shadow(radius: 4, y: 2)
                 .padding(.horizontal)
                 .padding(.horizontal)
         }
