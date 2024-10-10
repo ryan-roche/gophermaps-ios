@@ -33,6 +33,6 @@ struct LoadingView: View {
 }
 
 #Preview {
-    LoadingView(symbolName: "globe", label: "Loading...")
+    LoadingView(symbolName: "map", label: "Loading...")
         .symbolEffect(.pulse, isActive: true)
 }

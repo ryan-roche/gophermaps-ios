@@ -26,7 +26,7 @@ struct AreaSelectorView: View {
                     }
                 }
             case .loading:
-                ProgressView("Getting Areas...")
+                LoadingView(symbolName: "map", label: "Getting Areas...")
             case .done:
                 VStack(spacing:16) {
                     Text("Select an area to get started.")

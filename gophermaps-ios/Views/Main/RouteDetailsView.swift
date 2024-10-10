@@ -194,7 +194,7 @@ struct RouteDetailsView: View {
                     routeLoadStatus = .loading
                 }
             case .loading:
-                ProgressView("Calculating Route...")
+                LoadingView(symbolName: "square.3.layers.3d", label: "Calculating Route...")
             case .done:
                 RouteContentsView(stepGroups).toolbar {
                     ToolbarItem(placement: .navigationBarTrailing) {
@@ -204,7 +204,7 @@ struct RouteDetailsView: View {
             case .offline:
                 ContentUnavailableView("You're Offline", systemImage:"wifi.slash")
             case .failed:
-                ContentUnavailableView("Load failed", systemImage: "exclamationmark.magnifyingglass")
+                ContentUnavailableView("Failed to Load Route", systemImage: "square.3.layers.3d.slash")
                     .foregroundStyle(.secondary)
         }
     }

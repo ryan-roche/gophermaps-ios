@@ -7,21 +7,25 @@
 
 import Foundation
 
+
+// Used to tell if a download failed because the device is offline, or some other reason
 enum InstructionDownloadFailureType {
     case networkOffline
     case otherError(Error)
 }
 
-enum InstructionFileStatus {
+// Used to reflect instruction availability in the UI
+enum InstructionStatus {
     case missing
     case downloaded
     case downloadFailed(InstructionDownloadFailureType)
 }
 
+
 actor InstructionsManager {
     static let shared = InstructionsManager()
     
-    var instructionFileStatuses: [String: InstructionFileStatus] = [:]
+    var instructionStatuses: [String: InstructionStatus] = [:]
     
     private let fileManager = FileManager.default
     private let instructionsDirectory: URL
@@ -40,11 +44,17 @@ actor InstructionsManager {
     }
     
     
+    /// Downloads the instructions for given
+    /// - Parameter dirs: List of instruction directory name strings (i.e. "starID-endID")
     func downloadInstructions(from dirs: [String]) async {
-        var urls: [URL] = []    // URLs to instruction directories on CDN
+        
+        // Ensure that manifest.json has been downloaded
         
         for dir in dirs {
-            urls.append(instructionsBaseURL.appendingPathComponent(dir))
+            // TODO: Assemble a list of URLs
+            // TODO: Make call to downloadFiles
+            // TODO: Set status for directory to downloading
+            // TODO: Await call to downloadFiles and update status accordingly
         }
     }
     

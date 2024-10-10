@@ -38,7 +38,7 @@ struct DestinationSelectorView: View {
                     destinationLoadStatus = .loading
                 }
             case .loading:
-                ProgressView("Loading Destinations...")
+                LoadingView(symbolName: "mappin", label: "Loading Destinations...")
             case .done:
                 if destinations.isEmpty {
                     ContentUnavailableView("No destinations found", systemImage:"questionmark.circle.dashed")

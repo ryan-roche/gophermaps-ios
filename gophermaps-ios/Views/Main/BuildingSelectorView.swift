@@ -38,7 +38,7 @@ struct BuildingSelectorView: View {
                     }
                 }
             case .loading:
-                ProgressView("Loading Buildings...")
+                LoadingView(symbolName: "building.2", label: "Loading Buildings...")
             case .done:
                 if buildings.isEmpty {
                     ContentUnavailableView("No buildings found", systemImage:"questionmark.circle.dashed")
