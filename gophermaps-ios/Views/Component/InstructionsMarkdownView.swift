@@ -99,8 +99,9 @@ struct InstructionsMarkdownView: View {
             ScrollView {
                 Markdown(
                     markdownContent, imageBaseURL: instructionsDirectoryURL
-                ).markdownImageProvider(.asset)
-                    .markdownBlockStyle(\.image) { configuration in
+                )
+                .markdownImageProvider(.asset)
+                .markdownBlockStyle(\.image) { configuration in
                         VStack(spacing: 0) {
                             configuration.label
                                 .accessibilityLabel("Step instructions image")
