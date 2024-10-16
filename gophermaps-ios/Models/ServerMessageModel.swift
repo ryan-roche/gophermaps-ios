@@ -14,6 +14,7 @@ struct ServerMessageModel: Codable {
     let colors: [String]
     let title: String
     let body: String
+    let id: String
     
     init?(jsonString: String) {
             guard let jsonData = jsonString.data(using: .utf8) else {
