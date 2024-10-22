@@ -29,8 +29,6 @@ struct AreaSelectorView: View {
                 LoadingView(symbolName: "map", label: "Getting Areas...")
             case .done:
                 VStack(spacing:16) {
-                    Text("Select an area to get started.")
-                        .frame(maxWidth:.infinity, alignment: .leading)
                     ForEach(areas, id: \.self) {area in
                         NavigationLink(
                             destination: {
