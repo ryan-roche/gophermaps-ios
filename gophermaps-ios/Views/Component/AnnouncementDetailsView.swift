@@ -88,6 +88,7 @@ struct AnnouncementDetailsView: View {
         }
         .navigationBarBackButtonHidden()
         .statusBarHidden()
+        .colorScheme(.light)
     }
 }
 

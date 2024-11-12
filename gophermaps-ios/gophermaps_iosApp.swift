@@ -33,6 +33,11 @@ enum apiCallState {
 
 @main
 struct gophermaps_iosApp: App {
+    init() {
+        // Initialize the DownloadManager
+        _ = DownloadManager.shared
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()

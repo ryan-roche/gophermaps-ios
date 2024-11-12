@@ -29,7 +29,9 @@ struct InstructionsMarkdownView: View {
         ).first!
 
         self.routeID = dirName
-        self.instructionsDirectoryURL = docsDir.appendingPathComponent(dirName)
+        self.instructionsDirectoryURL = docsDir
+            .appendingPathComponent("instructions")
+            .appendingPathComponent(dirName)
         self.markdownURL = instructionsDirectoryURL.appendingPathComponent(
             "instructions.md")
 
@@ -100,7 +102,7 @@ struct InstructionsMarkdownView: View {
                 Markdown(
                     markdownContent, imageBaseURL: instructionsDirectoryURL
                 )
-                .markdownImageProvider(.asset)
+                .markdownImageProvider(.documents)
                 .markdownBlockStyle(\.image) { configuration in
                         VStack(spacing: 0) {
                             configuration.label
@@ -137,6 +139,9 @@ struct InstructionsMarkdownView: View {
                 "Failed to load Instructions", systemImage: "square.3.layers.3d"
             )
             .foregroundStyle(.secondary)
+            .onAppear {
+                print("Failed to load instructions at \(markdownURL.absoluteString)")
+            }
         }
     }
 }

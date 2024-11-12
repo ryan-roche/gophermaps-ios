@@ -35,9 +35,12 @@ struct DataSettingsView: View {
         }
     }
     
-    func deleteInstructions() {
-        // Get URL to documents directory
-        // Delete all contents of the instructions directory
+    func deleteInstructions() async {
+        do {
+            try await DownloadManager.shared.clearDownloadedInstructions()
+        } catch {
+            print("Failed to clear instructions! \(error)")
+        }
     }
     
     var body: some View {
@@ -60,10 +63,14 @@ struct DataSettingsView: View {
                    label: {Text("Clear Downloaded Instructions")})
                 .confirmationDialog("Delete all downloaded instruction data?",
                     isPresented: $confirmDeleteInstructions) {
-                    Button("Delete Instruction Data", role:.destructive) { deleteInstructions() }
+                    Button("Delete Instruction Data", role:.destructive) {
+                        Task {
+                            await deleteInstructions()
+                        }
+                    }
                     Button("Cancel", role:.cancel) {}
                 } message: {
-                    Text("Are you sure you want to delete all saved routes?")
+                    Text("Are you sure you want to delete all downloaded instruction data? You will need to redownload any instructions in order to view them again.")
                 }
         }
 #if DEBUG

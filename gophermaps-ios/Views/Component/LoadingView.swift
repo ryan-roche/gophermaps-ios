@@ -23,6 +23,7 @@ struct LoadingView: View {
                 .scaledToFit()
                 .foregroundStyle(.tertiary)
                 .frame(width:100, height:100)
+                .symbolEffect(.pulse, isActive: true)
             HStack {
                 ProgressView()
                 Text(label).foregroundStyle(.secondary)
@@ -34,5 +35,4 @@ struct LoadingView: View {
 
 #Preview {
     LoadingView(symbolName: "map", label: "Loading...")
-        .symbolEffect(.pulse, isActive: true)
 }

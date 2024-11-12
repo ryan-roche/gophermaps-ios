@@ -202,7 +202,7 @@ struct RouteDetailsView: View {
                     }
                 }
             case .offline:
-                ContentUnavailableView("You're Offline", systemImage:"wifi.slash")
+                NetworkOfflineMessage()
             case .failed:
                 ContentUnavailableView("Failed to Load Route", systemImage: "square.3.layers.3d.slash")
                     .foregroundStyle(.secondary)

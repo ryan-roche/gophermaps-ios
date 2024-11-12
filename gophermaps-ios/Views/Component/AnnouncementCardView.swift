@@ -74,8 +74,9 @@ struct AnnouncementCardView: View {
                     showing.toggle()
                 }
             }
-                .matchedTransitionSource(id: "card", in: announcementCardNamespace)
+            .matchedTransitionSource(id: "card", in: announcementCardNamespace)
         }
+        .colorScheme(.light)
     }
 }
 

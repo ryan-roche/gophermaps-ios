@@ -9,18 +9,19 @@ import SwiftUI
 
 struct StepInstructionsView: View {
     
-    let instructionsDirName: String
+    let step: RouteStep
     
     init(_ step: RouteStep) {
-        guard case let RouteStep.changeBuilding(_, true, start, end) = step else {
-            fatalError("Incorrect step type!")
-        }
-        
-        instructionsDirName = start + "-" + end
+        self.step = step
     }
     
     var body: some View {
-        InstructionsMarkdownView(dirName: instructionsDirName)
+        switch step {
+            case .changeBuilding(_, _, let startID, let endID):
+                InstructionsMarkdownView(dirName: "\(startID)-\(endID)")
+            default:
+                LoadingView(symbolName: "exclamationmark.triangle", label: "Incorrect Step Type!")
+        }
     }
 }
 

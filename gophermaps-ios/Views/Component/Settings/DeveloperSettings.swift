@@ -10,8 +10,11 @@ import SwiftUI
 struct DeveloperSettings: View {
     var body: some View {
         List {
-            SettingsLink("Browse Instructions", icon: "folder.fill", iconBackground: .blue) {
-                DataSettingsView()
+            SettingsLink("Browse Documents", icon: "folder.fill", iconBackground: .blue) {
+                DocumentsDebugView()
+            }
+            SettingsLink("Haptic Tests", icon: "iphone.gen3.radiowaves.left.and.right", iconBackground: .gray) {
+                HapticTestsView()
             }
         }
     }
