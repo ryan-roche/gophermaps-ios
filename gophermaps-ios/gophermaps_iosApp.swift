@@ -20,8 +20,27 @@ let apiClient = Client(
 )
 //#endif
 
-let thumbnailBaseURL = "https://raw.githubusercontent.com/ryan-roche/gophermaps-data/main/thumbnails"
-let instructionBaseURL = "https://raw.githubusercontent.com/ryan-roche/gophermaps-data/main/instructions"
+let baseURLConfig: [String: String] = {
+    guard let path = Bundle.main.path(forResource: "baseURLs", ofType: "plist"),
+          let dict = NSDictionary(contentsOfFile: path) as? [String: String] else {
+        fatalError("Failed to load baseURLs.plist")
+    }
+    return dict
+}()
+
+let thumbnailBaseURL: String = {
+    guard let url = baseURLConfig["ThumbnailBaseURL"] else {
+        fatalError("ThumbnailBaseURL not found in baseURLs.plist")
+    }
+    return url
+}()
+
+let instructionBaseURL: String = {
+    guard let url = baseURLConfig["InstructionBaseURL"] else {
+        fatalError("InstructionBaseURL not found in baseURLs.plist")
+    }
+    return url
+}()
 
 enum apiCallState {
     case idle
