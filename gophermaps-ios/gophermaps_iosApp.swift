@@ -10,16 +10,14 @@ import SwiftData
 import OpenAPIRuntime
 import OpenAPIURLSession
 
-// Singleton API Client (shonal would be so proud...)
-//#if DEBUG
-//let apiClient = MockAPIClient()
-//#else
-let apiClient = Client(
-    serverURL: try! Servers.server1(),
-    transport: URLSessionTransport()
-)
-//#endif
+// Instantiate generated API client object
+#if DEBUG
+@MainActor var apiClient = Client(serverURL: try! Servers.server1(), transport: URLSessionTransport())
+#else
+let apiClient = Client(serverURL: try! Servers.server1(), transport: URLSessionTransport())
+#endif
 
+// Get baseURL values from baseURLs.plist
 let baseURLConfig: [String: String] = {
     guard let path = Bundle.main.path(forResource: "baseURLs", ofType: "plist"),
           let dict = NSDictionary(contentsOfFile: path) as? [String: String] else {
@@ -27,14 +25,12 @@ let baseURLConfig: [String: String] = {
     }
     return dict
 }()
-
 let thumbnailBaseURL: String = {
     guard let url = baseURLConfig["ThumbnailBaseURL"] else {
         fatalError("ThumbnailBaseURL not found in baseURLs.plist")
     }
     return url
 }()
-
 let instructionBaseURL: String = {
     guard let url = baseURLConfig["InstructionBaseURL"] else {
         fatalError("InstructionBaseURL not found in baseURLs.plist")
