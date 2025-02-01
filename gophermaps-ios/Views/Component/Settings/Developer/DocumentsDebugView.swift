@@ -18,7 +18,6 @@ struct DocumentsDebugView: View {
                 FileItemView(url: documentsURL, expandedPaths: $expandedPaths)
             }
             .listStyle(.inset)
-            .navigationTitle("Documents Directory")
         }
     }
 }
