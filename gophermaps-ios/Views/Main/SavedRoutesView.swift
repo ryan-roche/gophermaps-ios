@@ -59,7 +59,7 @@ struct SavedRoutesView: View {
 }
 
 #if DEBUG
-#Preview {
+#Preview("Populated") {
     @Previewable @State var showing: Bool = true
     @Previewable @State var presenting: Bool = false
     @Previewable @State var savedRouteSelection: SavedRoute? = nil
@@ -77,6 +77,28 @@ struct SavedRoutesView: View {
         .sheet(isPresented: $showing) {
             SavedRoutesView(showing: $showing, presentation: $presenting, savedRouteSelection: $savedRouteSelection)
                 .modelContainer(previewContainer)
+        }
+    }
+}
+
+#Preview("Empty") {
+    @Previewable @State var showing: Bool = true
+    @Previewable @State var presenting: Bool = false
+    @Previewable @State var savedRouteSelection: SavedRoute? = nil
+    
+    NavigationStack {
+        VStack {
+            Text("Route Selection:")
+            Text("\(savedRouteSelection?.start.buildingName ?? "None") → \(savedRouteSelection?.end.buildingName ?? "None")")
+            
+            Button("Show Sheet") {
+                showing.toggle()
+            }
+        }
+        .navigationTitle("Dummy")
+        .sheet(isPresented: $showing) {
+            SavedRoutesView(showing: $showing, presentation: $presenting, savedRouteSelection: $savedRouteSelection)
+                .modelContainer(previewEmptyContainer)
         }
     }
 }
