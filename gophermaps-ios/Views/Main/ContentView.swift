@@ -65,6 +65,13 @@ struct ContentView: View {
                             savedRouteSelection: $savedRouteSelection
                         )
                         .navigationTitle("Saved Routes")
+                        .toolbar {
+                            ToolbarItem(placement: .topBarTrailing) {
+                                Button("Done") {
+                                    isShowingSavedRoutesSheet = false
+                                }
+                            }
+                        }
                     }
                 }
             

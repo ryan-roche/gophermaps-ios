@@ -23,13 +23,7 @@ struct SavedRoutesView: View {
         if savedRoutes.isEmpty {
             ContentUnavailableView("No Saved Routes", systemImage:"bookmark.slash")
                 .foregroundStyle(.secondary)
-                .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button("Done") {
-                            showing = false
-                        }
-                    }
-                }
+            }
         } else {
             // MARK: List of saved route cards
             List {
@@ -57,13 +51,6 @@ struct SavedRoutesView: View {
                     .listRowSeparator(.hidden, edges: .all)
                 }
             }.listStyle(.plain)
-                .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button("Done") {
-                            showing = false
-                        }
-                    }
-                }
         }
     }
 }
