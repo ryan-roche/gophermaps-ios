@@ -56,6 +56,7 @@ struct gophermaps_iosApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-        }.modelContainer(for: SavedRoute.self)
+        }
+        .modelContainer(for: SavedRoute.self)
     }
 }

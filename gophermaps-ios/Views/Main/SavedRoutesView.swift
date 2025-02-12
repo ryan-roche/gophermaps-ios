@@ -15,10 +15,12 @@ struct SavedRoutesView: View {
     @Binding var presentation: Bool
     @Binding var savedRouteSelection: SavedRoute?
     
-    var routes: [SavedRoute]
+    @Query(sort:
+            [SortDescriptor(\SavedRoute.start.buildingName), SortDescriptor(\SavedRoute.end.buildingName)]
+    ) var savedRoutes: [SavedRoute]
     
     var body: some View {
-        if routes.isEmpty {
+        if savedRoutes.isEmpty {
             ContentUnavailableView("No Saved Routes", systemImage:"bookmark.slash")
                 .foregroundStyle(.secondary)
                 .toolbar {
@@ -31,7 +33,7 @@ struct SavedRoutesView: View {
         } else {
             // MARK: List of saved route cards
             List {
-                ForEach(routes) { route in
+                ForEach(savedRoutes) { route in
                     Button {
                         savedRouteSelection = route
                         print("Set route selection.")
@@ -83,7 +85,7 @@ struct SavedRoutesView: View {
         }
         .navigationTitle("Dummy")
         .sheet(isPresented: $showing) {
-            SavedRoutesView(showing: $showing, presentation: $presenting, savedRouteSelection: $savedRouteSelection, routes: sampleRoutes)
+            SavedRoutesView(showing: $showing, presentation: $presenting, savedRouteSelection: $savedRouteSelection)
                 .modelContainer(previewContainer)
         }
     }
