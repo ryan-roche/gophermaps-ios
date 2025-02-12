@@ -23,6 +23,7 @@ class SavedRoute: CustomStringConvertible {
     }
 }
 
+#if DEBUG
 @MainActor let sampleRoutes: [SavedRoute] = [
     SavedRoute(start: .init(buildingName: "Keller Hall", thumbnail: "KellerHall.jpg", keyID: "kh4"),
                end: .init(buildingName: "Walter Library", thumbnail: "Walter.jpg", keyID: "waltB")),
@@ -48,3 +49,4 @@ let previewContainer: ModelContainer = {
         fatalError("Failed to create preview container: \(error)")
     }
 }()
+#endif
