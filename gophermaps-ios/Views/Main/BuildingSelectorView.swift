@@ -63,7 +63,7 @@ struct BuildingSelectorView: View {
                         }
                     }
                     .listStyle(.plain)
-                    .searchable(text: $searchText, placement: .navigationBarDrawer, prompt:"Building Name")
+                    .searchable(text: $searchText, prompt:"Building Name")
                 }
             case .offline:
                 NetworkOfflineMessage()
