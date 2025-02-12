@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct SaveRouteButton: View {
-    @Query var matchingSavedRoutes: [SavedRoute]
+    @Query var savedRoutes: [SavedRoute]
     @Environment(\.modelContext) var context
     
     let start: Components.Schemas.BuildingEntryModel
@@ -20,17 +20,13 @@ struct SaveRouteButton: View {
         
         self.start = start
         self.end = end
-        
-        _matchingSavedRoutes = Query(filter: #Predicate<SavedRoute> {
-            $0.start.keyID == start.keyID && $0.end.keyID == end.keyID
-        })
     }
     
     var body: some View {
         Button {
-            if !matchingSavedRoutes.isEmpty {
+            if savedRoutes.contains(where: { $0.start.keyID == start.keyID && $0.end.keyID == end.keyID }) {
                 // Get handle to model object and delete from context
-                let routeObject = matchingSavedRoutes.first!
+                let routeObject = savedRoutes.filter { $0.start.keyID == start.keyID && $0.end.keyID == end.keyID }.first!
                 context.delete(routeObject)
             } else {
                 // Create model object and save to context
@@ -38,7 +34,7 @@ struct SaveRouteButton: View {
                 context.insert(routeObject)
             }
         } label: {
-            Image(systemName: !matchingSavedRoutes.isEmpty ? "bookmark.fill" : "bookmark")
+            Image(systemName: savedRoutes.contains(where: { $0.start.keyID == start.keyID && $0.end.keyID == end.keyID }) ? "bookmark.fill" : "bookmark")
         }
         .buttonBorderShape(.circle)
         .buttonStyle(.bordered)
