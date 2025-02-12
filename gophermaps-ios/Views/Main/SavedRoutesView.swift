@@ -15,9 +15,7 @@ struct SavedRoutesView: View {
     @Binding var presentation: Bool
     @Binding var savedRouteSelection: SavedRoute?
     
-    @Query(sort:
-            [SortDescriptor(\SavedRoute.start.buildingName), SortDescriptor(\SavedRoute.end.buildingName)]
-    ) var savedRoutes: [SavedRoute]
+    @Query var savedRoutes: [SavedRoute]
     
     var body: some View {
         if savedRoutes.isEmpty {
@@ -32,7 +30,7 @@ struct SavedRoutesView: View {
         } else {
             // MARK: List of saved route cards
             List {
-                ForEach(savedRoutes) { route in
+                ForEach(savedRoutes.sorted(by: {($0.start.buildingName, $0.end.buildingName) < ($1.start.buildingName, $1.end.buildingName)})) { route in
                     Button {
                         savedRouteSelection = route
                         print("Set route selection.")
