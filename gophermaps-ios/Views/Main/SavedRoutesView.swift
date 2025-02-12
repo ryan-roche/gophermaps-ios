@@ -21,7 +21,12 @@ struct SavedRoutesView: View {
     
     var body: some View {
         if savedRoutes.isEmpty {
-            ContentUnavailableView("No Saved Routes", systemImage:"bookmark.slash")
+            VStack {
+                ContentUnavailableView {
+                    Label("No Saved Routes", systemImage:"bookmark.slash")
+                } description: {
+                    Text("Save a route with the \(Image(systemName:"bookmark.circle")) button to see it here")
+                }
                 .foregroundStyle(.secondary)
             }
         } else {
