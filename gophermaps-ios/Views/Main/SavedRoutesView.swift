@@ -66,6 +66,7 @@ struct SavedRoutesView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     @Previewable @State var showing: Bool = true
     @Previewable @State var presenting: Bool = false
@@ -87,3 +88,4 @@ struct SavedRoutesView: View {
         }
     }
 }
+#endif

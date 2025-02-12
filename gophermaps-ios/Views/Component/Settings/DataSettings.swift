@@ -79,7 +79,9 @@ struct DataSettingsView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     DataSettingsView()
         .modelContainer(previewContainer)
 }
+#endif

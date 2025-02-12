@@ -348,6 +348,7 @@ struct RouteDetailsView: View {
     }
 }
 
+#if DEBUG
 #Preview("RouteDetailsView (Unsaved Route)") {
     NavigationStack {
         RouteDetailsView(
@@ -368,3 +369,4 @@ struct RouteDetailsView: View {
     }
     .modelContainer(previewContainer)
 }
+#endif
