@@ -12,6 +12,15 @@
             <ActionContent
                title = "Run Script"
                scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;cd &quot;${PROJECT_DIR}&quot; ; agvtool bump&#10;">
+               <EnvironmentBuildable>
+                  <BuildableReference
+                     BuildableIdentifier = "primary"
+                     BlueprintIdentifier = "942CD6FE2C67FBB10007554F"
+                     BuildableName = "gophermaps-ios.app"
+                     BlueprintName = "gophermaps-ios"
+                     ReferencedContainer = "container:gophermaps-ios.xcodeproj">
+                  </BuildableReference>
+               </EnvironmentBuildable>
             </ActionContent>
          </ExecutionAction>
       </PostActions>
