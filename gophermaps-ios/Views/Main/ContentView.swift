@@ -10,16 +10,12 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @State private var showingSavedRoutes = false
-    @State private var showingSettings = false
+    @State private var isShowingSavedRoutesSheet = false
+    @State private var isShowingSettingsSheet = false
     @State private var showingOnboarding = false
     
     @State private var isViewingSavedRoute = false
     @State private var savedRouteSelection: SavedRoute? = nil
-    
-    @Query(sort:
-            [SortDescriptor(\SavedRoute.start.buildingName), SortDescriptor(\SavedRoute.end.buildingName)]
-    ) var savedRoutes: [SavedRoute]
     
     @AppStorage("hasDoneOnboarding") var hasDoneOnboarding: Bool = false
     
@@ -27,25 +23,26 @@ struct ContentView: View {
         NavigationStack {
             AreaSelectorView()
                 .navigationTitle("Areas")
+            
+                // "hijacks" the navigation hierarchy to directly present a saved route's steps
                 .navigationDestination(isPresented:$isViewingSavedRoute) {
                     RouteDetailsView(
                         savedRouteSelection?.start ?? Components.Schemas.BuildingEntryModel(buildingName: "placeholder", thumbnail: "placeholder.jpg", keyID: ""),
                         savedRouteSelection?.end ?? Components.Schemas.BuildingEntryModel(buildingName: "placeholder", thumbnail: "placeholder.jpg", keyID: "")
                     )
-                    
                 }
                 .toolbar {
                     ToolbarItemGroup(placement:.topBarTrailing) {
                         Button {
-                            showingSavedRoutes.toggle()
+                            isShowingSavedRoutesSheet.toggle()
                         } label: {
-                            Label("Saved", systemImage: savedRoutes.isEmpty ? "bookmark" : "bookmark.fill")
+                            Label("Saved", systemImage: "bookmark.fill")
                         }
                         .buttonBorderShape(.circle)
                         .buttonStyle(.borderedProminent)
                         
                         Button {
-                            showingSettings.toggle()
+                            isShowingSettingsSheet.toggle()
                         } label: {
                             Image(systemName: "gear")
                         }
@@ -53,20 +50,28 @@ struct ContentView: View {
                         .buttonStyle(.borderedProminent)
                     }
                 }
-                .sheet(isPresented: $showingSettings) {
-                    SettingsView(showing: $showingSettings)
+                .sheet(isPresented: $isShowingSettingsSheet) {
+                    SettingsView(showing: $isShowingSettingsSheet)
                 }
                 .sheet(isPresented: $showingOnboarding) {
                     FirstLaunchView(showing: $showingOnboarding)
                         .padding(.top)
                 }
-                .sheet(isPresented: $showingSavedRoutes) {
+                .sheet(isPresented: $isShowingSavedRoutesSheet) {
                     NavigationStack {
                         SavedRoutesView(
-                            showing: $showingSavedRoutes,
+                            showing: $isShowingSavedRoutesSheet,
                             presentation: $isViewingSavedRoute,
-                            savedRouteSelection: $savedRouteSelection, routes: savedRoutes)
-                            .navigationTitle("Saved Routes")
+                            savedRouteSelection: $savedRouteSelection
+                        )
+                        .navigationTitle("Saved Routes")
+                        .toolbar {
+                            ToolbarItem(placement: .topBarTrailing) {
+                                Button("Done") {
+                                    isShowingSavedRoutesSheet = false
+                                }
+                            }
+                        }
                     }
                 }
             
@@ -79,7 +84,9 @@ struct ContentView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     ContentView()
         .modelContainer(previewContainer)
 }
+#endif
