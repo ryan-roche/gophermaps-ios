@@ -10,14 +10,16 @@ import SwiftData
 import OpenAPIRuntime
 import OpenAPIURLSession
 
-// Instantiate generated API client object
+
+// MARK: API Client initializastion
 #if DEBUG
 @MainActor var apiClient = Client(serverURL: try! Servers.server1(), transport: URLSessionTransport())
 #else
 let apiClient = Client(serverURL: try! Servers.server1(), transport: URLSessionTransport())
 #endif
 
-// Get baseURL values from baseURLs.plist
+
+// MARK: baseURL setup
 let baseURLConfig: [String: String] = {
     guard let path = Bundle.main.path(forResource: "baseURLs", ofType: "plist"),
           let dict = NSDictionary(contentsOfFile: path) as? [String: String] else {
