@@ -9,13 +9,12 @@ import SwiftUI
 
 struct DevBuildBadge: View {
     var body: some View {
-        Label("Dev Build", systemImage: "hammer.fill")
-            .padding()
-            .background(
-                FrostedGlassView(effect: .systemChromeMaterial)
-                    .clipShape(Capsule(style:.circular))
-                    .shadow(color:.black.opacity(0.25), radius: 4, y:2)
-            )
+        HStack(spacing: 4) {
+            Image(systemName: "hammer.fill")
+                .font(.caption2)
+            Text("Development Build")
+                .font(.caption)
+        }
     }
 }
 

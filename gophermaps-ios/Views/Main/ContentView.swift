@@ -31,7 +31,22 @@ struct ContentView: View {
                         savedRouteSelection?.end ?? Components.Schemas.BuildingEntryModel(buildingName: "placeholder", thumbnail: "placeholder.jpg", keyID: "")
                     )
                 }
+            
+                // MARK: Main View toolbar
                 .toolbar {
+#if DEBUG
+                    ToolbarItem(placement: .topBarLeading) {
+                        DevBuildBadge()
+                            .frame(maxWidth:.infinity)
+                            .padding(10)
+                            .background(
+                                FrostedGlassView(effect: .systemThickMaterial)
+                                    .clipShape(Capsule())
+                                    .shadow(color:.black.opacity(0.2), radius:4, y:2)
+                            )
+                    }
+#endif
+                    
                     ToolbarItemGroup(placement:.topBarTrailing) {
                         Button {
                             isShowingSavedRoutesSheet.toggle()
@@ -50,13 +65,19 @@ struct ContentView: View {
                         .buttonStyle(.borderedProminent)
                     }
                 }
+            
+                // MARK: Settings Sheet
                 .sheet(isPresented: $isShowingSettingsSheet) {
                     SettingsView(showing: $isShowingSettingsSheet)
                 }
+            
+                // MARK: Onboarding Sheet
                 .sheet(isPresented: $showingOnboarding) {
                     FirstLaunchView(showing: $showingOnboarding)
                         .padding(.top)
                 }
+            
+                // MARK: Saved Routes Sheet
                 .sheet(isPresented: $isShowingSavedRoutesSheet) {
                     NavigationStack {
                         SavedRoutesView(
