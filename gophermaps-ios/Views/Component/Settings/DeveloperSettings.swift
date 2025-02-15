@@ -5,6 +5,8 @@
 //  Created by Ryan Roche on 10/2/24.
 //
 
+#if DEBUG
+
 import SwiftUI
 import OpenAPIURLSession
 
@@ -50,3 +52,5 @@ struct DeveloperSettings: View {
         DeveloperSettings()
     }
 }
+
+#endif

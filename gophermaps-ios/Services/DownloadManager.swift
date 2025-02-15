@@ -110,8 +110,8 @@ actor DownloadManager {
     /// Attempts to retrieve the most recently created server message
     func getServerMessage() async throws -> ServerMessageModel? {
         let manifest = try await getManifest()
-        let messages = manifest.serverMessages
-        return messages.min(by: { $0.startDateObject! < $1.startDateObject! })
+        let activeMessages = manifest.serverMessages.filter({ $0.isActive })
+        return activeMessages.min(by: { $0.startDateObject! < $1.startDateObject! })
     }
     
     /// Downloads the instructions for given directories

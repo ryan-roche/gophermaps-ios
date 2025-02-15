@@ -100,8 +100,10 @@ struct SettingsView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     @Previewable @State var showing: Bool = true
     SettingsView(showing: $showing)
         .modelContainer(previewContainer)
 }
+#endif

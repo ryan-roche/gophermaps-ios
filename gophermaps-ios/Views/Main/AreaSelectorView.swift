@@ -75,6 +75,7 @@ struct AreaSelectorView: View {
                 areaLoadStatus = .failed
         }
     }
+    
     func getServerMessage() async {
         do {
             self.serverAnnouncement = try await DownloadManager.shared.getServerMessage()
