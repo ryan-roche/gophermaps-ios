@@ -25,14 +25,14 @@ class SavedRoute: CustomStringConvertible {
 
 #if DEBUG
 @MainActor let sampleRoutes: [SavedRoute] = [
-    SavedRoute(start: .init(buildingName: "Keller Hall", thumbnail: "KellerHall.jpg", keyID: "kh4"),
-               end: .init(buildingName: "Walter Library", thumbnail: "Walter.jpg", keyID: "waltB")),
-    SavedRoute(start: .init(buildingName: "Keller Hall", thumbnail: "KellerHall.jpg", keyID: "kh4"),
-               end: .init(buildingName: "Tate Hall", thumbnail: "TateHall.jpg", keyID: "thSB")),
-    SavedRoute(start: .init(buildingName: "Walter Library", thumbnail: "Walter.jpg", keyID: "waltB"),
-               end: .init(buildingName: "Tate Hall", thumbnail: "TateHall.jpg", keyID: "thSB")),
-    SavedRoute(start: .init(buildingName: "Mechanical Engineering", thumbnail: "MechEng.jpg", keyID: "me2"),
-               end: .init(buildingName: "Smith Hall", thumbnail: "Smith.jpg", keyID: "smthB"))
+    SavedRoute(start: .init(buildingName: "Keller Hall", thumbnail: "KellerHall.jpg", keyID: "kh4", applePlaceID: "foo", googlePlaceID: "bar"),
+               end: .init(buildingName: "Walter Library", thumbnail: "Walter.jpg", keyID: "waltB", applePlaceID: "foo", googlePlaceID: "bar")),
+    SavedRoute(start: .init(buildingName: "Keller Hall", thumbnail: "KellerHall.jpg", keyID: "kh4", applePlaceID: "foo", googlePlaceID: "bar"),
+               end: .init(buildingName: "Tate Hall", thumbnail: "TateHall.jpg", keyID: "thSB", applePlaceID: "foo", googlePlaceID: "bar")),
+    SavedRoute(start: .init(buildingName: "Walter Library", thumbnail: "Walter.jpg", keyID: "waltB", applePlaceID: "foo", googlePlaceID: "bar"),
+               end: .init(buildingName: "Tate Hall", thumbnail: "TateHall.jpg", keyID: "thSB", applePlaceID: "foo", googlePlaceID: "bar")),
+    SavedRoute(start: .init(buildingName: "Mechanical Engineering", thumbnail: "MechEng.jpg", keyID: "me2", applePlaceID: "foo", googlePlaceID: "bar"),
+               end: .init(buildingName: "Smith Hall", thumbnail: "Smith.jpg", keyID: "smthB", applePlaceID: "foo", googlePlaceID: "bar"))
 ]
 
 @MainActor

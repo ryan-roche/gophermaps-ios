@@ -95,8 +95,9 @@ struct SavedRouteCard: View {
 }
 
 #Preview {
-    SavedRouteCard(SavedRoute(start: .init(buildingName: "Keller Hall", thumbnail: "KellerHall.jpg", keyID: "kh4"),
-                              end: .init(buildingName: "Walter Library", thumbnail: "Walter.jpg", keyID: "waltB")))
+    SavedRouteCard(SavedRoute(
+        start: .init(buildingName: "Keller Hall", thumbnail: "KellerHall.jpg", keyID: "kh4", applePlaceID: "foo", googlePlaceID: "bar"),
+        end: .init(buildingName: "Walter Library", thumbnail: "Walter.jpg", keyID: "waltB", applePlaceID: "foo", googlePlaceID: "bar")))
     .frame(height:120)
     .overlay {
         HStack {

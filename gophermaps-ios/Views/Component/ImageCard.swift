@@ -174,6 +174,9 @@ struct ImageCard: View {
         building: Components.Schemas.BuildingEntryModel(
             buildingName: "Dummy",
             thumbnail: "KellerHall.jpg",
-            keyID: "db1")
+            keyID: "db1",
+            applePlaceID: "foo",
+            googlePlaceID: "bar"
+        )
     ).padding()
 }

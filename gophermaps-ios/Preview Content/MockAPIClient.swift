@@ -66,15 +66,24 @@ struct MockAPIClient: APIProtocol {
                     Components.Schemas.BuildingEntryModel(
                         buildingName: "Dummy Building",
                         thumbnail: "dummy1.png",
-                        keyID: "db1"),
+                        keyID: "db1",
+                        applePlaceID: "foo",
+                        googlePlaceID: "bar"
+                    ),
                     Components.Schemas.BuildingEntryModel(
                         buildingName: "Dummy Building",
                         thumbnail: "dummy2.png",
-                        keyID: "db2"),
+                        keyID: "db2",
+                        applePlaceID: "foo",
+                        googlePlaceID: "bar"
+                    ),
                     Components.Schemas.BuildingEntryModel(
                         buildingName: "Dummy Building",
                         thumbnail: "dummy1.png",
-                        keyID: "db3"),
+                        keyID: "db3",
+                        applePlaceID: "foo",
+                        googlePlaceID: "bar"
+                    ),
                 ])
             )
         )
@@ -89,15 +98,24 @@ struct MockAPIClient: APIProtocol {
                     Components.Schemas.BuildingEntryModel(
                         buildingName: "Dummy Building 1",
                         thumbnail: "dummy1.png",
-                        keyID: "db1"),
+                        keyID: "db1",
+                        applePlaceID: "foo",
+                        googlePlaceID: "bar"
+                    ),
                     Components.Schemas.BuildingEntryModel(
                         buildingName: "Dummy Building 2",
                         thumbnail: "dummy2.png",
-                        keyID: "db2"),
+                        keyID: "db2",
+                        applePlaceID: "foo",
+                        googlePlaceID: "bar"
+                    ),
                     Components.Schemas.BuildingEntryModel(
                         buildingName: "Dummy Building 3",
                         thumbnail: "dummy1.png",
-                        keyID: "db3")
+                        keyID: "db3",
+                        applePlaceID: "foo",
+                        googlePlaceID: "bar"
+                    )
                 ])
             )
         )
